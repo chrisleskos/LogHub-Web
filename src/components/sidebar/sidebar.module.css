@@ -1,0 +1,84 @@
+.sidebar {
+  background-color: white;
+}
+
+.sidebar-head {
+}
+
+.transp-logo {
+  margin-left: 10px;
+  width: 5rem;
+  display: flex;
+  cursor: pointer;
+}
+@media only screen and (max-width: 600px) {
+  .hide-when-on-mobile {
+    display: none;
+  }
+}
+
+.profile-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 10px 20px;
+  margin: 0 0 60px 0;
+}
+
+.sidebar nav {
+  width: auto;
+}
+
+.nav-button {
+  font-size: 1.5rem;
+  padding: 10px 20px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  text-decoration: none;
+  color: #000;
+  display: block;
+}
+
+.nav-button:hover {
+  opacity: 0.7;
+}
+
+.menu-button-container {
+  position: fixed;
+  top: 0;
+  display: flex;
+  align-items: center;
+  margin-left: 1rem;
+  width: 16rem;
+}
+
+.side-menu-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* margin: 1rem 0; */
+  font-size: 3rem;
+  cursor: pointer;
+  overflow: hidden;
+  transform: translate(0px, -7px);
+}
+
+.user-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.user-image img {
+  display: block;
+  height: 3rem;
+}
+
+.user-details .fullname:hover {
+  color: var(--activated-color);
+  cursor: pointer;
+}
+
+.logout {
+  margin: 30px 20px;
+}

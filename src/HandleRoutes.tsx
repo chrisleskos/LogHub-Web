@@ -1,40 +1,21 @@
-import Axios from "axios";
-import { useEffect, useState } from "react";
-import { useCookies } from "react-cookie";
+import React from "react";
 import { Route, Routes } from "react-router-dom";
-import LoginPage from "./pages/login/LoginPage";
+import HomePage from "./pages/home/HomePage";
+import AboutPage from "./pages/about/AboutPage";
+import PageNotFound from "./pages/notFound/PageNotFound";
 
 interface HandleRoutesProps {
   baseUrl: string;
 }
 
 function HandleRoutes({ baseUrl }: HandleRoutesProps) {
-  // const checkIfLoggedUrl = "/auth/check";
-  // const [cookies] = useCookies(["token"]);
-  // const token = cookies.token;
-
-  // const [isTokenValid, setTokenValid] = useState(token !== undefined);
-  // useEffect(() => {
-  //   Axios.get(baseUrl + checkIfLoggedUrl, {
-  //     headers: {
-  //       Authorization: "Bearer " + token,
-  //     },
-  //   })
-  //     .then(function (response) {
-  //       setTokenValid(response.data);
-  //     })
-  //     .catch(function (error) {
-  //       setTokenValid(false);
-  //     });
-  // }, [baseUrl, checkIfLoggedUrl]);
-
   return (
     <Routes>
-      <Route
-        path="/"
-        element={<LoginPage baseUrl={baseUrl} url="auth/authenticate" />}
-      />
-      {/* <Route path="/login" element={<HomePage baseUrl={baseUrl} />} /> */}
+      <Route path="" element={<HomePage baseUrl={baseUrl} />} />
+      <Route path="/home" element={<HomePage baseUrl={baseUrl} />} />
+      <Route path="/" element={<HomePage baseUrl={baseUrl} />} />
+      <Route path="/about" element={<AboutPage baseUrl={baseUrl} />} />
+      <Route path="*" element={<PageNotFound baseUrl={baseUrl} />} />
     </Routes>
   );
 }

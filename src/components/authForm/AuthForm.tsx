@@ -13,7 +13,7 @@ interface AuthFormProps {
   ];
 }
 
-function AuthForm({ onSubmit }: AuthFormProps) {
+function AuthForm({ onSubmit, fields }: AuthFormProps) {
   const [focusedPassword, setFocusedPassword] = useState(false);
   const [focusedUsername, setFocusedUsername] = useState(false);
 
@@ -36,6 +36,7 @@ function AuthForm({ onSubmit }: AuthFormProps) {
             autoComplete="username"
             onFocus={() => setFocusedUsername(true)}
             onBlur={() => setFocusedUsername(false)}
+            ref={fields[0].ref}
           />
         </div>
         <div className={styles["input-wrap"]}>
@@ -53,6 +54,7 @@ function AuthForm({ onSubmit }: AuthFormProps) {
             key="1"
             onFocus={() => setFocusedPassword(true)}
             onBlur={() => setFocusedPassword(false)}
+            ref={fields[1].ref}
           />
         </div>
         <div className={styles.forgot}>Forgot password?</div>

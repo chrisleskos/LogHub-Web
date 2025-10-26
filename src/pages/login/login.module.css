@@ -2,7 +2,8 @@
   display: flex;
   align-items: center;
   width: 100vw;
-  height: 100vh;
+  /* height: 100vh; */
+  min-height: 100%;
   overflow: hidden;
 }
 
@@ -11,7 +12,9 @@
   display: flex;
   align-items: center;
   height: 100vh;
-  max-width: 40%;
+  min-height: 550px;
+  width: 50%;
+  min-width: 350px;
 }
 
 .login-area .welcome {
@@ -24,17 +27,21 @@
 }
 
 .login-banner {
+  position: fixed;
+  right: 0;
+  top: 0.5vh;
   display: flex;
   align-items: flex-start;
   justify-content: center;
   flex-direction: column;
   background-color: #242424;
   flex: 1;
-  height: 99%;
+  height: 99vh;
   width: 52%;
-  margin-right: 5px;
+  margin-right: 0.5vh;
   border-top-left-radius: 30px;
   border-bottom-left-radius: 30px;
+  overflow: hidden;
 }
 
 .login-banner > div {

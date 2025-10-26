@@ -6,10 +6,10 @@ import Axios from "axios";
 
 interface LoginPageProps {
   baseUrl: string;
-  url: string;
+  path: string;
 }
 
-function LoginPage({ baseUrl, url }: LoginPageProps) {
+function LoginPage({ baseUrl, path }: LoginPageProps) {
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [cookies, setCookie] = useCookies([
@@ -32,13 +32,13 @@ function LoginPage({ baseUrl, url }: LoginPageProps) {
 
   const submitLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("IM SUPER IN");
+
     const usernameValue = username.ref.current!.value;
     const passwordVal = password.ref.current!.value;
 
     setShowAlert(false);
 
-    Axios.post(baseUrl + url, {
+    Axios.post(baseUrl + path, {
       emailOrUsername: usernameValue,
       password: passwordVal,
       rememberMe: true,
@@ -49,7 +49,6 @@ function LoginPage({ baseUrl, url }: LoginPageProps) {
         const lastname = response.data.lastname;
         const email = response.data.email;
         const username = response.data.username;
-        console.log(token);
         setCookie("token", token, {
           path: "/",
           secure: false,
@@ -77,13 +76,16 @@ function LoginPage({ baseUrl, url }: LoginPageProps) {
         });
 
         console.log(response.data);
-        // window.location.href = "/home";
+        window.location.href = "/home";
       })
       .catch(function (error) {
         if (error.code === "ERR_BAD_REQUEST") {
           setShowAlert(true);
           setAlertMessage("Wrong credentials");
         }
+      })
+      .finally(() => {
+        password.ref.current!.value = "";
       });
   };
 
