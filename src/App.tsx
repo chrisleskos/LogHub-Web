@@ -1,5 +1,4 @@
 import HandleRoutes from "./HandleRoutes";
-import "./styling/App.css";
 
 function App() {
   const host = import.meta.env.VITE_API_HOST;

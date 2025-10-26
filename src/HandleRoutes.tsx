@@ -30,7 +30,10 @@ function HandleRoutes({ baseUrl }: HandleRoutesProps) {
 
   return (
     <Routes>
-      <Route path="/" element={<LoginPage baseUrl={baseUrl} />} />
+      <Route
+        path="/"
+        element={<LoginPage baseUrl={baseUrl} url="auth/authenticate" />}
+      />
       {/* <Route path="/login" element={<HomePage baseUrl={baseUrl} />} /> */}
     </Routes>
   );
