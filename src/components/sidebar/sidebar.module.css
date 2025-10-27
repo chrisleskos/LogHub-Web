@@ -2,8 +2,8 @@
   background-color: white;
 }
 
-.sidebar-head {
-}
+/* .sidebar-head {
+} */
 
 .transp-logo {
   margin-left: 10px;
@@ -44,12 +44,12 @@
 }
 
 .menu-button-container {
-  position: fixed;
+  position: relative;
   top: 0;
   display: flex;
   align-items: center;
-  margin-left: 1rem;
-  width: 16rem;
+  width: 100vw;
+  height: 70px;
 }
 
 .side-menu-button {
@@ -61,6 +61,19 @@
   cursor: pointer;
   overflow: hidden;
   transform: translate(0px, -7px);
+  z-index: 999;
+  margin-left: 1rem;
+}
+
+.menu-button-container .user-image {
+  height: 100%;
+  margin-left: auto;
+  margin-right: 1rem;
+  cursor: pointer;
+}
+
+.menu-button-container .user-image img {
+  height: 59%;
 }
 
 .user-image {

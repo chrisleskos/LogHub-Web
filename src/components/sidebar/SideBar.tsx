@@ -12,7 +12,7 @@ function SideBar({
   onLogout,
   firstname,
   lastname,
-  email,
+  // email,
   username,
 }: SideBarProps) {
   return (
@@ -27,14 +27,22 @@ function SideBar({
           &equiv;
         </div>
         <img
-          src="./logo-trnsp.png"
+          src="/logo-trnsp.png"
           className={
-            styles["transp-logo"] + " " + styles["hide-when-on-mobile"]
+            styles["transp-logo"] //+ " " + styles["hide-when-on-mobile"]
           }
           onClick={() => {
             window.location.href = "/home";
           }}
         />
+        <div
+          className={styles["user-image"]}
+          onClick={() => {
+            window.location.href = "/" + username;
+          }}
+        >
+          <img src={"/user-icon.png"} />
+        </div>
       </div>
 
       <div
@@ -47,7 +55,7 @@ function SideBar({
       >
         <div className={"offcanvas-header " + styles["sidebar-head"]}>
           <img
-            src="./logo-trnsp.png"
+            src="/logo-trnsp.png"
             className={styles["transp-logo"]}
             onClick={() => {
               window.location.href = "/home";
@@ -64,7 +72,7 @@ function SideBar({
         <div className="offcanvas-body">
           <div className={styles["profile-container"]}>
             <div className={styles["user-image"]}>
-              <img src="./user-icon.png" />
+              <img src={"/user-icon.png"} />
             </div>
             <div className={styles["user-details"]}>
               <div>
@@ -83,9 +91,9 @@ function SideBar({
             <a className={"" + styles["nav-button"]} href="/home">
               Home
             </a>
-          </nav>
-          {/* <DevidingLine /> */}
-          <nav>
+            <a className={"" + styles["nav-button"]} href="/equipment">
+              Equipment
+            </a>
             <a className={"" + styles["nav-button"]} href="/about">
               About
             </a>

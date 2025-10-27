@@ -1,6 +1,3 @@
-import Axios from "axios";
-import { useEffect, useState } from "react";
-import { useCookies } from "react-cookie";
 import { Route, Routes } from "react-router-dom";
 import LoginPage from "./pages/login/LoginPage";
 import RegisterPage from "./pages/register/RegisterPage";

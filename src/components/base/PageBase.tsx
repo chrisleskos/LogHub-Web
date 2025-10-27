@@ -1,13 +1,8 @@
-import Axios from "axios";
 import SideBar from "../sidebar/SideBar";
 import { useCookies } from "react-cookie";
 
-interface PageBaseProps {
-  baseUrl: string;
-}
-
-function PageBase({ baseUrl }: PageBaseProps) {
-  const [cookies, , removeCookie] = useCookies([
+function PageBase() {
+  const [cookies] = useCookies([
     "token",
     "firstname",
     "lastname",
@@ -15,7 +10,7 @@ function PageBase({ baseUrl }: PageBaseProps) {
     "username",
   ]);
 
-  const token = cookies.token;
+  //   const token = cookies.token;
   const firstname = cookies.firstname;
   const lastname = cookies.lastname;
   const email = cookies.email;

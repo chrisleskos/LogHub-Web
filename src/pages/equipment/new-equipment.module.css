@@ -1,0 +1,15 @@
+.types-container {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 10px;
+}
+
+.types-container .type-selection {
+  margin: 0.3rem;
+  cursor: pointer;
+  background-color: var(--activated-color);
+  padding: 10px;
+  border-radius: 12px;
+  color: white;
+  font-weight: 600;
+}

@@ -25,6 +25,7 @@ form.auth .input-wrap {
   margin: 1rem auto;
   border-radius: 10px;
   width: 90%;
+  overflow: hidden;
 }
 
 form.auth .input-wrap .icon {

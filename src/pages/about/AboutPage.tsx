@@ -5,7 +5,7 @@ interface AboutPageProps {
 }
 
 function AboutPage({ baseUrl }: AboutPageProps) {
-  return <PageBase baseUrl={baseUrl} />;
+  return <PageBase />;
 }
 
 export default AboutPage;

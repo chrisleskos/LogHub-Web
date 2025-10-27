@@ -1,0 +1,41 @@
+.input-field-wrap {
+  display: flex;
+  align-items: center;
+  width: 400px;
+  max-width: 90vw;
+  height: 2.8rem;
+  padding: 5px 0.5rem;
+  margin: auto;
+  border: 1.2px solid #ddddddee;
+  border-radius: 12px;
+  position: relative;
+  background-color: #efefef49;
+}
+
+.input-field-wrap .placeholder {
+  position: absolute;
+  z-index: 1;
+  padding: 0px;
+  transform: translate(0, -50%);
+  top: 50%;
+  transition-duration: 0.3s;
+  color: #00000055;
+}
+
+.input-field-wrap .placeholder.small {
+  top: 0% !important;
+  font-size: 0.6rem;
+  transform: translate(0, 0);
+}
+
+.input-field-wrap input {
+  position: relative;
+  background-color: transparent;
+  border: none;
+  z-index: 5;
+  width: 100%;
+}
+
+.input-field-wrap input:focus {
+  outline: none;
+}

@@ -5,7 +5,12 @@ interface PageNotFoundProps {
 }
 
 function PageNotFound({ baseUrl }: PageNotFoundProps) {
-  return <PageBase baseUrl={baseUrl} />;
+  return (
+    <>
+      <PageBase />
+      <div>Page Not Found</div>
+    </>
+  );
 }
 
 export default PageNotFound;
