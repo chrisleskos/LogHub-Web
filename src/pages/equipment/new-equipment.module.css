@@ -1,5 +1,6 @@
 .types-container {
   display: flex;
+  justify-content: center;
   flex-wrap: wrap;
   padding: 10px;
 }
@@ -12,4 +13,8 @@
   border-radius: 12px;
   color: white;
   font-weight: 600;
+}
+
+.equipment-type-card {
+  --element-card-width: 170px;
 }

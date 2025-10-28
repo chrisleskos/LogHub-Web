@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import type { EquipmentResponse } from "../../interface/Equipment";
 import styles from "./equipment.module.css";
 import InputField from "../../components/input/InputField";
+import ListElementCard from "../../components/display/list/ListElementCard";
+import AddNewListElement from "../../components/display/list/AddNewListElement";
 
 interface EquipmentProps {
   baseUrl: string;
@@ -34,36 +36,20 @@ function EquipmentPage({ baseUrl }: EquipmentProps) {
 
   const prepareDOMElements = () => {
     return equipmentList.map((equipment: EquipmentResponse) => (
-      <div
-        className={styles.equipment}
-        onClick={() => (window.location.href = "/equipment/" + equipment.id)}
+      <ListElementCard
+        listElement={{
+          id: equipment.id,
+          name: equipment.name,
+          creator: equipment.creator,
+          description: equipment.description,
+          favorite: false,
+          hashtag: equipment.equipmentType,
+        }}
+        onClickHandler={() =>
+          (window.location.href = "/equipment/" + equipment.id)
+        }
         key={equipment.id}
-      >
-        <div
-          className={styles.creator}
-          onClick={(e: React.MouseEvent<HTMLDivElement>) => {
-            e.stopPropagation();
-            window.location.href = "/" + equipment.creator;
-          }}
-        >
-          @{equipment.creator}
-        </div>
-        <div className={styles["equipment-image"]}>
-          <img src="/default-equipment.jpg" />
-        </div>
-        <div className={styles["equipment-text"]}>
-          <div className={styles["equipment-name"]}>
-            <span className={styles.hashtag}>
-              #{equipment.equipmentType.toLowerCase()}
-            </span>
-            {equipment.name}
-          </div>
-
-          <div className={styles["equipment-description"]}>
-            {equipment.description}
-          </div>
-        </div>
-      </div>
+      />
     ));
   };
   return (
@@ -73,17 +59,7 @@ function EquipmentPage({ baseUrl }: EquipmentProps) {
       <div className={styles["list-display"]}>
         <InputField placeHolder="Search" />
         <div className={styles["equipment-container"]}>
-          <div
-            className={styles.equipment + " " + styles["add-new"]}
-            onClick={() => (window.location.href = "/equipment/new")}
-          >
-            <div className={styles["equipment-image"]}>
-              <img src="/add.png" />
-            </div>
-            <div className={styles["equipment-text"]}>
-              <div className={styles["equipment-name"]}>Add new</div>
-            </div>
-          </div>
+          <AddNewListElement responseLocation="equipment" />
           {prepareDOMElements()}
         </div>
       </div>

@@ -4,12 +4,16 @@
   width: 400px;
   max-width: 90vw;
   height: 2.8rem;
-  padding: 5px 0.5rem;
+  padding: 10px 0.5rem;
   margin: auto;
   border: 1.2px solid #ddddddee;
   border-radius: 12px;
   position: relative;
   background-color: #efefef49;
+}
+
+.input-field-wrap.textarea {
+  height: fit-content;
 }
 
 .input-field-wrap .placeholder {
@@ -28,14 +32,17 @@
   transform: translate(0, 0);
 }
 
-.input-field-wrap input {
+.input-field-wrap input,
+.input-field-wrap textarea {
   position: relative;
   background-color: transparent;
   border: none;
   z-index: 5;
   width: 100%;
+  max-height: 200px;
 }
 
-.input-field-wrap input:focus {
+.input-field-wrap input:focus,
+.input-field-wrap textarea:focus {
   outline: none;
 }
