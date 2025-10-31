@@ -9,7 +9,8 @@ import { useCookies } from "react-cookie";
 import TextAreaField from "../../components/input/TextAreaField";
 import ListElementCard from "../../components/display/list/ListElementCard";
 import type { EquipmentRequest } from "../../interface/Equipment";
-import ProgressBar from "../../components/progressBar/ProgressBar";
+import CreationForm from "../../components/creationForm/CreationForm";
+import type { ProgressBarRef } from "../../components/progressBar/ProgressBar";
 
 interface EquipmentProps {
   baseUrl: string;
@@ -24,6 +25,8 @@ function NewEquipmentPage({ baseUrl }: EquipmentProps) {
   const detailsSlide = useRef<HTMLDivElement>(null);
   const [equipmentTypesList, setEquipmentTypesList] = useState([]);
 
+  const progressBarRef = useRef<ProgressBarRef>(null);
+
   let equipmentRequest: EquipmentRequest = {
     name: "",
     description: "",
@@ -32,7 +35,6 @@ function NewEquipmentPage({ baseUrl }: EquipmentProps) {
 
   const selectEquipmentType = (type: string) => {
     equipmentRequest.equipmentType = type;
-    nextStep();
   };
 
   useEffect(() => {
@@ -65,7 +67,10 @@ function NewEquipmentPage({ baseUrl }: EquipmentProps) {
             .join(" "),
         }}
         extraClasses={`${styles["equipment-type-card"]} ${cardStyles["smaller-text"]}`}
-        onClickHandler={() => selectEquipmentType(type)}
+        onClickHandler={() => {
+          selectEquipmentType(type);
+          progressBarRef.current?.nextStep();
+        }}
         key={type}
       />
     ));
@@ -75,8 +80,7 @@ function NewEquipmentPage({ baseUrl }: EquipmentProps) {
       <PageBase />
       <div className={styles["form-name"]}>New Equipment</div>
       <form>
-        {/* progression bar */}
-        <ProgressBar>
+        <CreationForm ref={progressBarRef}>
           <div
             className={styles["form-slide"]}
             id="slide1"
@@ -96,9 +100,7 @@ function NewEquipmentPage({ baseUrl }: EquipmentProps) {
             <InputField placeHolder="Name" />
             <TextAreaField placeHolder="Description" />
           </div>
-        </ProgressBar>
-        {/* Back/Next buttons */}
-        {/*  */}
+        </CreationForm>
       </form>
     </>
   );
