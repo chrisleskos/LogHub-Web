@@ -21,9 +21,10 @@ form.auth .logo img {
 form.auth .input-wrap {
   display: flex;
   align-items: center;
-  background-color: #e1e1e1;
+  background-color: var(--input-bg-color);
   margin: 1rem auto;
   border-radius: 10px;
+  border: var(--light-border);
   width: 90%;
   overflow: hidden;
 }
@@ -78,7 +79,7 @@ form.auth .buttons-container button.google {
   justify-content: center;
   background-color: var(--background-color);
   color: #232323;
-  border: 0.8px solid rgba(30, 30, 30, 0.2);
+  border: var(--light-border);
 }
 
 form.auth .buttons-container button.google img {

@@ -1,0 +1,17 @@
+.form-slide {
+  display: initial;
+}
+
+.show-slide {
+  display: block;
+}
+
+.outcome {
+  display: block;
+}
+
+.step {
+  padding: 15px 20px;
+  font-weight: 600;
+  border-radius: 20px;
+}

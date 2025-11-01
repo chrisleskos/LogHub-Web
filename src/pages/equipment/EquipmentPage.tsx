@@ -1,7 +1,7 @@
 import Axios from "axios";
 import PageBase from "../../components/base/PageBase";
 import { useCookies } from "react-cookie";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { EquipmentResponse } from "../../interface/Equipment";
 import styles from "./equipment.module.css";
 import InputField from "../../components/input/InputField";
@@ -16,6 +16,9 @@ function EquipmentPage({ baseUrl }: EquipmentProps) {
   const [cookies] = useCookies(["token"]);
   const equipmentURL = "equipment";
   const [equipmentList, setEquipmentList] = useState([]);
+
+  const searchIputRef = useRef<HTMLInputElement>(null);
+
   const getAllUserEquipment = () => {
     Axios.get(baseUrl + equipmentURL, {
       headers: {
@@ -57,7 +60,12 @@ function EquipmentPage({ baseUrl }: EquipmentProps) {
       <PageBase />
       <h1>Equipment</h1>
       <div className={styles["list-display"]}>
-        <InputField placeHolder="Search" />
+        <InputField
+          placeHolder="Search"
+          name="search-equipment"
+          id="search-equipment-bar"
+          inputRef={searchIputRef}
+        />
         <div className={styles["equipment-container"]}>
           <AddNewListElement responseLocation="equipment" />
           {prepareDOMElements()}

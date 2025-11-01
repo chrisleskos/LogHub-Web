@@ -1,16 +1,17 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import PageBase from "../../components/base/PageBase";
 import InputField from "../../components/input/InputField";
-// import type { EquipmentRequest } from "../../interface/Equipment";
 import styles from "./new-equipment.module.css";
+import creationFormStyles from "../../components/creationForm/creation-form.module.css";
 import cardStyles from "../../components/display/list/list-display.module.css";
 import Axios from "axios";
 import { useCookies } from "react-cookie";
 import TextAreaField from "../../components/input/TextAreaField";
 import ListElementCard from "../../components/display/list/ListElementCard";
 import type { EquipmentRequest } from "../../interface/Equipment";
-import CreationForm from "../../components/creationForm/CreationForm";
-import type { ProgressBarRef } from "../../components/progressBar/ProgressBar";
+import CreationForm, {
+  type CreationFormRef,
+} from "../../components/creationForm/CreationForm";
 
 interface EquipmentProps {
   baseUrl: string;
@@ -25,16 +26,63 @@ function NewEquipmentPage({ baseUrl }: EquipmentProps) {
   const detailsSlide = useRef<HTMLDivElement>(null);
   const [equipmentTypesList, setEquipmentTypesList] = useState([]);
 
-  const progressBarRef = useRef<ProgressBarRef>(null);
+  const creationFormRef = useRef<CreationFormRef>(null);
+  const nameInputRef = useRef<HTMLInputElement>(null);
+  const descriptionInputRef = useRef<HTMLTextAreaElement>(null);
 
-  let equipmentRequest: EquipmentRequest = {
+  const nextStep = () => creationFormRef.current?.nextStep();
+  const prevStep = () => creationFormRef.current?.prevStep();
+
+  const [equipmentRequest, setEquipmentRequest] = useState<EquipmentRequest>({
     name: "",
     description: "",
     equipmentType: "",
+  });
+
+  const setEquipmentType = (type: string) => {
+    setEquipmentRequest({
+      name: equipmentRequest.name,
+      description: equipmentRequest.description,
+      equipmentType: type,
+    });
   };
 
-  const selectEquipmentType = (type: string) => {
-    equipmentRequest.equipmentType = type;
+  const setEquipmentName = (name: string) => {
+    setEquipmentRequest({
+      name: name,
+      description: equipmentRequest.description,
+      equipmentType: equipmentRequest.equipmentType,
+    });
+  };
+
+  const setEquipmentDescription = (description: string) => {
+    setEquipmentRequest({
+      name: equipmentRequest.name,
+      description: description,
+      equipmentType: equipmentRequest.equipmentType,
+    });
+  };
+
+  const handleNameInputOnKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    setEquipmentName(e.currentTarget.value);
+  };
+
+  const handleDescInputOnKeyUp = (
+    e: React.KeyboardEvent<HTMLTextAreaElement>
+  ) => {
+    setEquipmentDescription(e.currentTarget.value);
+  };
+
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    nextStep();
+
+    Axios.post(baseUrl + equipmentURL, equipmentRequest, {
+      headers: {
+        Authorization: "Bearer " + cookies.token,
+      },
+    }).then();
   };
 
   useEffect(() => {
@@ -52,7 +100,7 @@ function NewEquipmentPage({ baseUrl }: EquipmentProps) {
       });
   }, [baseUrl, equipmentURL]);
 
-  const prepareDOMElements = () => {
+  const prepareDOMElements = useMemo(() => {
     return equipmentTypesList.map((type: string) => (
       <ListElementCard
         listElement={{
@@ -68,40 +116,66 @@ function NewEquipmentPage({ baseUrl }: EquipmentProps) {
         }}
         extraClasses={`${styles["equipment-type-card"]} ${cardStyles["smaller-text"]}`}
         onClickHandler={() => {
-          selectEquipmentType(type);
-          progressBarRef.current?.nextStep();
+          setEquipmentType(type);
+          nextStep();
         }}
         key={type}
       />
     ));
-  };
+  }, [equipmentTypesList]);
   return (
     <>
       <PageBase />
       <div className={styles["form-name"]}>New Equipment</div>
-      <form>
-        <CreationForm ref={progressBarRef}>
+      <div className={styles["selected-type"]}>
+        #{equipmentRequest.equipmentType.toLowerCase()}
+      </div>
+
+      <CreationForm ref={creationFormRef} onSubmitHandler={handleFormSubmit}>
+        <div
+          className={creationFormStyles["form-slide"]}
+          id="slide1"
+          ref={typeSelectionSlide}
+        >
+          <div className={styles["form-slide-header"]}>
+            Select type of equipment
+            <div className={styles["types-container"]}>
+              {prepareDOMElements}
+            </div>
+          </div>
+          <div className={styles["type-select-container"]}>
+            <div className={styles.types}></div>
+          </div>
+        </div>
+        <div
+          className={creationFormStyles["form-slide"]}
+          id="slide2"
+          ref={detailsSlide}
+        >
           <div
-            className={styles["form-slide"]}
-            id="slide1"
-            ref={typeSelectionSlide}
+            onClick={() => {
+              prevStep();
+            }}
           >
-            <div className={styles["form-slide-header"]}>
-              Select type of equipment
-              <div className={styles["types-container"]}>
-                {prepareDOMElements()}
-              </div>
-            </div>
-            <div className={styles["type-select-container"]}>
-              <div className={styles.types}></div>
-            </div>
+            Prev
           </div>
-          <div className={styles["form-slide"]} id="slide2" ref={detailsSlide}>
-            <InputField placeHolder="Name" />
-            <TextAreaField placeHolder="Description" />
-          </div>
-        </CreationForm>
-      </form>
+          <InputField
+            placeHolder="Name"
+            name="equiupment-name"
+            id="equipment-name"
+            inputRef={nameInputRef}
+            handleOnKeyUp={handleNameInputOnKeyUp}
+          />
+          <TextAreaField
+            placeHolder="Description"
+            name="equipment-description"
+            id="equipment-description"
+            inputRef={descriptionInputRef}
+            handleOnKeyUp={handleDescInputOnKeyUp}
+          />
+          <button>Submit</button>
+        </div>
+      </CreationForm>
     </>
   );
 }

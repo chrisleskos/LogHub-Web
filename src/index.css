@@ -11,8 +11,11 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* GLOBAL VARS */
   --background-color: #efefef;
   --activated-color: rgb(136, 184, 232);
+  --light-border: 1.5px solid #e2e2e2ff;
+  --input-bg-color: #e9e9e955;
 }
 
 a {

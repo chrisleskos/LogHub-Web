@@ -5,8 +5,8 @@
   max-width: 90vw;
   height: 2.8rem;
   padding: 10px 0.5rem;
-  margin: auto;
-  border: 1.2px solid #ddddddee;
+  margin: 0 auto 1rem auto;
+  border: var(--light-border);
   border-radius: 12px;
   position: relative;
   background-color: #efefef49;

@@ -1,23 +1,31 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import styles from "./input-field.module.css";
 
 interface InputFieldProps {
   placeHolder: string;
+  name: string;
+  id: string;
+  inputRef: React.RefObject<HTMLInputElement | null>;
+  handleOnKeyUp?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
-function InputField({ placeHolder }: InputFieldProps) {
-  const input = useRef<HTMLInputElement>(null);
+function InputField({
+  placeHolder,
+  name,
+  id,
+  inputRef,
+  handleOnKeyUp,
+}: InputFieldProps) {
   const placeHolderSpan = useRef<HTMLSpanElement>(null);
-  useEffect(() => {
-    input.current!.onfocus = () => {
-      placeHolderSpan.current!.classList.add(styles.small);
-    };
 
-    input.current!.addEventListener("focusout", () => {
-      if (input.current!.value == "")
-        placeHolderSpan.current!.classList.remove(styles.small);
-    });
-  }, []);
+  const handleFocus = () => {
+    placeHolderSpan.current!.classList.add(styles.small);
+  };
+
+  const handleBlur = () => {
+    if (inputRef.current!.value == "")
+      placeHolderSpan.current!.classList.remove(styles.small);
+  };
 
   return (
     <>
@@ -25,7 +33,14 @@ function InputField({ placeHolder }: InputFieldProps) {
         <span className={styles.placeholder} ref={placeHolderSpan}>
           {placeHolder}
         </span>
-        <input ref={input} />
+        <input
+          ref={inputRef}
+          name={name}
+          id={id}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          onKeyUp={handleOnKeyUp}
+        />
       </div>
     </>
   );
