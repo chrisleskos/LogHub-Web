@@ -33,7 +33,7 @@ function EquipmentPage({ baseUrl }: EquipmentProps) {
 
   useEffect(() => {
     getAllUserEquipment();
-  }, [baseUrl, equipmentURL]);
+  }, []);
 
   const prepareDOMElements = () => {
     return equipmentList
