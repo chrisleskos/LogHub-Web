@@ -40,6 +40,7 @@ function InputField({
           onFocus={handleFocus}
           onBlur={handleBlur}
           onKeyUp={handleOnKeyUp}
+          required
         />
       </div>
     </>

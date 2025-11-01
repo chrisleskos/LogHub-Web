@@ -1,6 +1,5 @@
 import React, {
   forwardRef,
-  useEffect,
   useImperativeHandle,
   useMemo,
   useRef,
@@ -11,7 +10,7 @@ import ProgressBar, { type ProgressBarRef } from "../progressBar/ProgressBar";
 import styles from "./creation-form.module.css";
 
 export interface CreationFormRef {
-  nextStep: () => void;
+  nextStep: (steps: number) => void;
   prevStep: () => void;
 }
 
@@ -30,10 +29,25 @@ const CreationForm = forwardRef<CreationFormRef, CreationFormProps>(
 
     const defaultSlides = [
       <div
-        className={`${styles["form-slide"]} ${styles.outcome}`}
+        className={`${styles["form-slide"]} ${styles["submition-msg"]}`}
         key="submition-outcome"
       >
-        {/*Loading/Success/Error*/}
+        <div className={`${styles.icon}`}></div>
+        <div className={styles.outcome}>Submiting</div>
+      </div>,
+      <div
+        className={`${styles["form-slide"]} ${styles["submition-msg"]}`}
+        key="submition-outcome"
+      >
+        <div className={`${styles.icon} ${styles.success}`}></div>
+        <div className={styles.outcome}>Successfull</div>
+      </div>,
+      <div
+        className={`${styles["form-slide"]} ${styles["submition-msg"]}`}
+        key="submition-outcome"
+      >
+        <div className={`${styles.icon} ${styles.error}`}></div>
+        <div className={styles.outcome}>Something went wrong</div>
       </div>,
     ];
 
@@ -55,9 +69,9 @@ const CreationForm = forwardRef<CreationFormRef, CreationFormProps>(
       return [...parentSlides, ...defaultSlides];
     }, [children]);
 
-    const nextStep = () => {
+    const nextStep = (steps = 1) => {
       setFormLevel((prev) => {
-        const newLvl = Math.min(prev + 1, allSlides.length);
+        const newLvl = Math.min(prev + steps, allSlides.length);
         return newLvl;
       });
 
@@ -79,12 +93,11 @@ const CreationForm = forwardRef<CreationFormRef, CreationFormProps>(
       prevStep,
     }));
 
-    useEffect(() => {}, []);
-
     return (
       <>
         <form onSubmit={onSubmitHandler}>
-          <ProgressBar totalSteps={allSlides.length - 1} ref={progressBarRef} />
+          {/* Length is minus 3 because the last 3 slides are submition outcome */}
+          <ProgressBar totalSteps={allSlides.length - 3} ref={progressBarRef} />
           {allSlides.map((slide, i) =>
             i === formLevel ? (
               <div className={styles["show-slide"]} key={i}>

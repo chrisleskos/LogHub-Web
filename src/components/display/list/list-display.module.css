@@ -1,6 +1,19 @@
 :root {
-  --element-card-width: 250px;
+  --element-card-width: 210px;
   --text-padding: 20px;
+}
+
+.list-container {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100vw;
+  padding: 50px 10%;
+}
+
+@media only screen and (max-width: 665px) {
+  .list-container {
+    justify-content: center;
+  }
 }
 
 .element {
@@ -52,8 +65,13 @@
 
 .element-name {
   border-top: 2px solid #eeeeeeff;
+  width: 100%;
   font-weight: bold;
-  padding: 0 0 calc(var(--text-padding) / 1.5) 0;
+  padding: 0;
+  /* TODO: fix this */
+  /* text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap; */
 }
 
 .element.add-new .element-name {
@@ -63,7 +81,7 @@
 }
 
 .element-description {
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   color: #00000099;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -78,6 +96,7 @@
   background-color: var(--activated-color);
   color: white;
   font-weight: 600;
+  font-size: 0.9rem;
   z-index: 10;
 }
 

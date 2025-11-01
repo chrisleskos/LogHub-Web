@@ -1,14 +1,12 @@
 import styles from "./list-display.module.css";
 
-interface AddNewListElementProps {
-  responseLocation: string;
-}
+interface AddNewListElementProps {}
 
-function AddNewListElement({ responseLocation }: AddNewListElementProps) {
+function AddNewListElement({}: AddNewListElementProps) {
   return (
     <div
       className={styles.element + " " + styles["add-new"]}
-      onClick={() => (window.location.href = `/${responseLocation}/new`)}
+      onClick={() => (window.location.href += `/new`)}
     >
       <div className={styles["element-image"]}>
         <img src="/add.png" />

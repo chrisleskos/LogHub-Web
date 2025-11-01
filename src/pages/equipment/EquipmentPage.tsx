@@ -1,12 +1,11 @@
 import Axios from "axios";
 import PageBase from "../../components/base/PageBase";
 import { useCookies } from "react-cookie";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import type { EquipmentResponse } from "../../interface/Equipment";
-import styles from "./equipment.module.css";
-import InputField from "../../components/input/InputField";
+// import styles from "./equipment.module.css";
 import ListElementCard from "../../components/display/list/ListElementCard";
-import AddNewListElement from "../../components/display/list/AddNewListElement";
+import List from "../../components/display/list/List";
 
 interface EquipmentProps {
   baseUrl: string;
@@ -16,8 +15,7 @@ function EquipmentPage({ baseUrl }: EquipmentProps) {
   const [cookies] = useCookies(["token"]);
   const equipmentURL = "equipment";
   const [equipmentList, setEquipmentList] = useState([]);
-
-  const searchIputRef = useRef<HTMLInputElement>(null);
+  const [searchValue, setSearchValue] = useState<string>("");
 
   const getAllUserEquipment = () => {
     Axios.get(baseUrl + equipmentURL, {
@@ -38,39 +36,43 @@ function EquipmentPage({ baseUrl }: EquipmentProps) {
   }, [baseUrl, equipmentURL]);
 
   const prepareDOMElements = () => {
-    return equipmentList.map((equipment: EquipmentResponse) => (
-      <ListElementCard
-        listElement={{
-          id: equipment.id,
-          name: equipment.name,
-          creator: equipment.creator,
-          description: equipment.description,
-          favorite: false,
-          hashtag: equipment.equipmentType,
-        }}
-        onClickHandler={() =>
-          (window.location.href = "/equipment/" + equipment.id)
-        }
-        key={equipment.id}
-      />
-    ));
+    return equipmentList
+      .filter(
+        (equipment: EquipmentResponse) =>
+          searchValue === "" ||
+          equipment.name.toLowerCase().includes(searchValue.toLowerCase()) ||
+          equipment.description
+            .toLowerCase()
+            .includes(searchValue.toLowerCase())
+      )
+      .map((equipment: EquipmentResponse) => (
+        <ListElementCard
+          listElement={{
+            id: equipment.id,
+            name: equipment.name,
+            creator: equipment.creator,
+            description: equipment.description,
+            favorite: false,
+            hashtag: equipment.equipmentType,
+          }}
+          onClickHandler={() =>
+            (window.location.href = "/equipment/" + equipment.id)
+          }
+          key={equipment.id}
+        />
+      ));
   };
   return (
     <>
       <PageBase />
-      <h1>Equipment</h1>
-      <div className={styles["list-display"]}>
-        <InputField
-          placeHolder="Search"
-          name="search-equipment"
-          id="search-equipment-bar"
-          inputRef={searchIputRef}
-        />
-        <div className={styles["equipment-container"]}>
-          <AddNewListElement responseLocation="equipment" />
-          {prepareDOMElements()}
-        </div>
-      </div>
+      <h2>Equipment</h2>
+      <List
+        handleOnKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => {
+          setSearchValue(e.currentTarget.value);
+        }}
+      >
+        {prepareDOMElements()}
+      </List>
     </>
   );
 }

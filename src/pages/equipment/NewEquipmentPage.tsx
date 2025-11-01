@@ -25,12 +25,13 @@ function NewEquipmentPage({ baseUrl }: EquipmentProps) {
   const typeSelectionSlide = useRef<HTMLDivElement>(null);
   const detailsSlide = useRef<HTMLDivElement>(null);
   const [equipmentTypesList, setEquipmentTypesList] = useState([]);
+  const [showAddition, setShowAddition] = useState<boolean>(false); // TODO: use to show the new Equipment
 
   const creationFormRef = useRef<CreationFormRef>(null);
   const nameInputRef = useRef<HTMLInputElement>(null);
   const descriptionInputRef = useRef<HTMLTextAreaElement>(null);
 
-  const nextStep = () => creationFormRef.current?.nextStep();
+  const nextStep = (steps = 1) => creationFormRef.current?.nextStep(steps);
   const prevStep = () => creationFormRef.current?.prevStep();
 
   const [equipmentRequest, setEquipmentRequest] = useState<EquipmentRequest>({
@@ -82,7 +83,13 @@ function NewEquipmentPage({ baseUrl }: EquipmentProps) {
       headers: {
         Authorization: "Bearer " + cookies.token,
       },
-    }).then();
+    })
+      .then((response) => {
+        nextStep();
+      })
+      .catch((error) => {
+        nextStep(2);
+      });
   };
 
   useEffect(() => {
@@ -126,11 +133,11 @@ function NewEquipmentPage({ baseUrl }: EquipmentProps) {
   return (
     <>
       <PageBase />
-      <div className={styles["form-name"]}>New Equipment</div>
+      <h2 className={styles["form-name"]}>New Equipment</h2>
       <div className={styles["selected-type"]}>
         #{equipmentRequest.equipmentType.toLowerCase()}
       </div>
-
+      {showAddition && <div></div>}
       <CreationForm ref={creationFormRef} onSubmitHandler={handleFormSubmit}>
         <div
           className={creationFormStyles["form-slide"]}
@@ -156,24 +163,27 @@ function NewEquipmentPage({ baseUrl }: EquipmentProps) {
             onClick={() => {
               prevStep();
             }}
+            className={creationFormStyles.step}
           >
-            Prev
+            &#60; Back
           </div>
-          <InputField
-            placeHolder="Name"
-            name="equiupment-name"
-            id="equipment-name"
-            inputRef={nameInputRef}
-            handleOnKeyUp={handleNameInputOnKeyUp}
-          />
-          <TextAreaField
-            placeHolder="Description"
-            name="equipment-description"
-            id="equipment-description"
-            inputRef={descriptionInputRef}
-            handleOnKeyUp={handleDescInputOnKeyUp}
-          />
-          <button>Submit</button>
+          <div className={styles["input-fields"]}>
+            <InputField
+              placeHolder="Name"
+              name="equiupment-name"
+              id="equipment-name"
+              inputRef={nameInputRef}
+              handleOnKeyUp={handleNameInputOnKeyUp}
+            />
+            <TextAreaField
+              placeHolder="Description"
+              name="equipment-description"
+              id="equipment-description"
+              inputRef={descriptionInputRef}
+              handleOnKeyUp={handleDescInputOnKeyUp}
+            />
+            <button>Submit</button>
+          </div>
         </div>
       </CreationForm>
     </>
