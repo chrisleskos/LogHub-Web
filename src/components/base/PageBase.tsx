@@ -1,7 +1,12 @@
 import SideBar from "../sidebar/SideBar";
 import { useCookies } from "react-cookie";
+import styles from "./base.module.css";
 
-function PageBase() {
+interface PageBaseProps {
+  header?: string;
+}
+
+function PageBase({ header }: PageBaseProps) {
   const [cookies] = useCookies([
     "token",
     "firstname",
@@ -29,6 +34,7 @@ function PageBase() {
         username={username}
         email={email}
       />
+      <h2>{header}</h2>
     </>
   );
 }

@@ -5,7 +5,7 @@ interface AboutPageProps {
 }
 
 function AboutPage({ baseUrl }: AboutPageProps) {
-  return <PageBase />;
+  return <PageBase header="About" />;
 }
 
 export default AboutPage;

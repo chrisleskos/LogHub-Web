@@ -7,8 +7,7 @@ interface PageNotFoundProps {
 function PageNotFound({ baseUrl }: PageNotFoundProps) {
   return (
     <>
-      <PageBase />
-      <div>Page Not Found</div>
+      <PageBase header="Page Not Found" />
     </>
   );
 }

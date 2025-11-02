@@ -94,6 +94,9 @@ function SideBar({
             <a className={"" + styles["nav-button"]} href="/equipment">
               Equipment
             </a>
+            <a className={"" + styles["nav-button"]} href="/exercise">
+              Exercise
+            </a>
             <a className={"" + styles["nav-button"]} href="/about">
               About
             </a>

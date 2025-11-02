@@ -8,8 +8,7 @@ interface NewExerciseInstanceProps {
 function NewExerciseInstancePage({ baseUrl }: NewExerciseInstanceProps) {
   return (
     <>
-      <PageBase />
-      <div>New Exercise Instance</div>
+      <PageBase header="New Exercise Instance" />
       <form>
         <div
           className={`${styles["form-page"]} ${styles["exercise-name"]}`}

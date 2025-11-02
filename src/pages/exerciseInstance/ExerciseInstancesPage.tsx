@@ -9,8 +9,7 @@ function GetAllExerciseInstancesPage({
 }: GetAllExerciseInstancesProps) {
   return (
     <>
-      <PageBase />
-      <div>GetAllExerciseInstancesPage</div>
+      <PageBase header="Exercise Instances" />
     </>
   );
 }

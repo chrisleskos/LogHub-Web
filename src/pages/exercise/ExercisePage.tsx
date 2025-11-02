@@ -40,7 +40,10 @@ function ExercisePage({ baseUrl }: exerciseProps) {
         (exercise: ExerciseResponse) =>
           searchValue === "" ||
           exercise.name.toLowerCase().includes(searchValue.toLowerCase()) ||
-          exercise.description.toLowerCase().includes(searchValue.toLowerCase())
+          (exercise.description &&
+            exercise.description
+              .toLowerCase()
+              .includes(searchValue.toLowerCase()))
       )
       .map((exercise: ExerciseResponse) => (
         <ListElementCard
@@ -61,8 +64,7 @@ function ExercisePage({ baseUrl }: exerciseProps) {
   };
   return (
     <>
-      <PageBase />
-      <h2>Exercises</h2>
+      <PageBase header="Exercises" />
       <List
         handleOnKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => {
           setSearchValue(e.currentTarget.value);

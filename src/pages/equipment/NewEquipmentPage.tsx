@@ -22,8 +22,6 @@ function NewEquipmentPage({ baseUrl }: EquipmentProps) {
   const equipmentURL = "equipment/";
   const equipmentTypesURL = "types";
 
-  const typeSelectionSlide = useRef<HTMLDivElement>(null);
-  const detailsSlide = useRef<HTMLDivElement>(null);
   const [equipmentTypesList, setEquipmentTypesList] = useState([]);
   const [showAddition, setShowAddition] = useState<boolean>(false); // TODO: use to show the new Equipment
 
@@ -132,18 +130,13 @@ function NewEquipmentPage({ baseUrl }: EquipmentProps) {
   }, [equipmentTypesList]);
   return (
     <>
-      <PageBase />
-      <h2 className={styles["form-name"]}>New Equipment</h2>
+      <PageBase header="New Equipment" />
       <div className={styles["selected-type"]}>
         #{equipmentRequest.equipmentType.toLowerCase()}
       </div>
       {showAddition && <div></div>}
       <CreationForm ref={creationFormRef} onSubmitHandler={handleFormSubmit}>
-        <div
-          className={creationFormStyles["form-slide"]}
-          id="slide1"
-          ref={typeSelectionSlide}
-        >
+        <div className={creationFormStyles["form-slide"]} id="slide1">
           <div className={styles["form-slide-header"]}>
             Select type of equipment
             <div className={styles["types-container"]}>
@@ -154,11 +147,7 @@ function NewEquipmentPage({ baseUrl }: EquipmentProps) {
             <div className={styles.types}></div>
           </div>
         </div>
-        <div
-          className={creationFormStyles["form-slide"]}
-          id="slide2"
-          ref={detailsSlide}
-        >
+        <div className={creationFormStyles["form-slide"]} id="slide2">
           <div
             onClick={() => {
               prevStep();

@@ -3,7 +3,7 @@ import HomePage from "./pages/home/HomePage";
 import AboutPage from "./pages/about/AboutPage";
 import PageNotFound from "./pages/notFound/PageNotFound";
 import NewExerciseInstancePage from "./pages/exerciseInstance/NewExerciseInstancePage";
-import GetAllExerciseInstancesPage from "./pages/exerciseInstance/GetAllExerciseInstancesPage";
+import GetAllExerciseInstancesPage from "./pages/exerciseInstance/ExerciseInstancesPage";
 import EquipmentPage from "./pages/equipment/EquipmentPage";
 import NewEquipmentPage from "./pages/equipment/NewEquipmentPage";
 import ExercisePage from "./pages/exercise/ExercisePage";

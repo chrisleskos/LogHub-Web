@@ -5,7 +5,7 @@ interface HomePageProps {
 }
 
 function HomePage({ baseUrl }: HomePageProps) {
-  return <PageBase />;
+  return <PageBase header="Home" />;
 }
 
 export default HomePage;

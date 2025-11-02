@@ -64,8 +64,7 @@ function EquipmentPage({ baseUrl }: EquipmentProps) {
   };
   return (
     <>
-      <PageBase />
-      <h2>Equipment</h2>
+      <PageBase header="Equipment" />
       <List
         handleOnKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => {
           setSearchValue(e.currentTarget.value);

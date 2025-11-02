@@ -6,7 +6,11 @@ function AddNewListElement({}: AddNewListElementProps) {
   return (
     <div
       className={styles.element + " " + styles["add-new"]}
-      onClick={() => (window.location.href += `/new`)}
+      onClick={() =>
+        (window.location.href += window.location.href.endsWith("/")
+          ? `new`
+          : "/new")
+      }
     >
       <div className={styles["element-image"]}>
         <img src="/add.png" />
