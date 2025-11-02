@@ -1,8 +1,10 @@
 import { useRef, useState } from "react";
 import AuthForm from "../../components/authForm/AuthForm";
 import styles from "./login.module.css";
+import autFormStyles from "../../components/authForm/authForm.module.css";
 import { useCookies } from "react-cookie";
 import Axios from "axios";
+import type { AuthInputProps } from "../../components/authForm/AuthInput";
 
 interface LoginPageProps {
   baseUrl: string;
@@ -12,22 +14,23 @@ interface LoginPageProps {
 function LoginPage({ baseUrl, path }: LoginPageProps) {
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
-  const [cookies, setCookie] = useCookies([
+  const [, setCookie] = useCookies([
     "token",
     "firstname",
     "lastname",
     "email",
     "username",
   ]);
-  const username = {
+  const username: AuthInputProps = {
     ref: useRef<HTMLInputElement>(null),
     fieldName: "username",
     icon: "@",
   };
-  const password = {
+  const password: AuthInputProps = {
     ref: useRef<HTMLInputElement>(null),
     fieldName: "password",
-    icon: "*",
+    icon: <i className="fa-solid fa-lock"></i>,
+    password: true,
   };
 
   const submitLogin = (e: React.FormEvent<HTMLFormElement>) => {
@@ -94,7 +97,24 @@ function LoginPage({ baseUrl, path }: LoginPageProps) {
       <div className={styles["login-page-wrap"]}>
         <div className={styles["login-area"]}>
           {/* <div className={styles.welcome}>Welcome back!</div> */}
-          <AuthForm onSubmit={submitLogin} fields={[username, password]} />
+          <AuthForm onSubmit={submitLogin} inputFields={[username, password]}>
+            <div className={autFormStyles.forgot}>Forgot password?</div>
+            <div className={autFormStyles["buttons-container"]}>
+              <button type="submit">Submit</button>
+              <button className={autFormStyles.google}>
+                <img src="./google.png" />
+                Google
+              </button>
+            </div>
+            <div
+              className={autFormStyles.signup}
+              onClick={() => {
+                window.location.href = "/register";
+              }}
+            >
+              Sign up
+            </div>
+          </AuthForm>
         </div>
         <div className={styles["login-banner"]}>
           <div>Track.</div>
