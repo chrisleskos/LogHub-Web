@@ -1,8 +1,10 @@
-export type ListElement = {
+export type ListElementData = {
   id?: number;
-  name: string;
+  title?: string;
+  name?: string;
   description?: string;
   creator?: string;
   hashtag?: string;
   favorite?: boolean;
+  imageSrc?: string;
 };

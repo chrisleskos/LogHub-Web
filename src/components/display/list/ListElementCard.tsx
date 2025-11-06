@@ -1,67 +1,79 @@
 import type { MouseEventHandler } from "react";
 import styles from "./list-display.module.css";
-import type { ListElement } from "./ListElement";
+import type { ListElementData } from "./ListElementData";
 
 interface ListElementCardProps {
   onClickHandler?: MouseEventHandler<HTMLDivElement>;
   extraClasses?: string;
-  listElement: ListElement;
+  listElementData: ListElementData;
 }
 
 function ListElementCard({
   onClickHandler,
   extraClasses,
-  listElement,
+  listElementData,
 }: ListElementCardProps) {
   return (
     <div
       className={`${styles.element} ${extraClasses}`}
       onClick={onClickHandler}
     >
-      {listElement.creator && (
+      {listElementData.creator && (
         <div
           className={styles.creator}
           onClick={(e: React.MouseEvent<HTMLDivElement>) => {
             e.stopPropagation();
-            window.location.href = "/" + listElement.creator;
+            window.location.href = "/" + listElementData.creator;
           }}
         >
-          @{listElement.creator}
+          @{listElementData.creator}
         </div>
       )}
-      {listElement.favorite && (
+      {listElementData.favorite && (
         <div
           className={styles.favorite}
           onClick={(e: React.MouseEvent<HTMLDivElement>) => {
             e.stopPropagation();
             const heartImg = document.getElementById(
-              `heart-${listElement.id}`
+              `heart-${listElementData.id}`
             ) as HTMLImageElement;
             heartImg.src = "/heart.png";
           }}
         >
-          <img src="/empty-heart.png" id={`heart-${listElement.id}`} />
+          <img src="/empty-heart.png" id={`heart-${listElementData.id}`} />
         </div>
       )}
       <div className={styles["element-image"]}>
-        <img src="/default-equipment.jpg" />
+        <img
+          src={
+            listElementData.imageSrc
+              ? listElementData.imageSrc
+              : "/default-equipment.jpg"
+          }
+        />
       </div>
-
-      <div className={styles["element-text"]}>
-        <div className={styles["element-name"]}>
-          {listElement.hashtag && (
-            <span className={styles.hashtag}>
-              #{listElement.hashtag.toLowerCase()}
-            </span>
-          )}
-          {listElement.name}
-        </div>
-        {listElement.description && (
-          <div className={styles["element-description"]}>
-            {listElement.description}
+      {listElementData.title && (
+        <div className={styles.title}>{listElementData.title}</div>
+      )}
+      {(listElementData.name ||
+        listElementData.description ||
+        listElementData.hashtag) && (
+        <div className={styles["element-text"]}>
+          <div className={styles["element-name"]}>
+            {listElementData.hashtag && (
+              <span className={styles.hashtag}>
+                #{listElementData.hashtag.toLowerCase()}
+              </span>
+            )}
+            {listElementData.name}
           </div>
-        )}
-      </div>
+          {listElementData.description && (
+            <div className={styles["element-description"]}>
+              {listElementData.description}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

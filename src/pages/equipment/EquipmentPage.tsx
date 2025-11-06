@@ -47,7 +47,7 @@ function EquipmentPage({ baseUrl }: EquipmentProps) {
       )
       .map((equipment: EquipmentResponse) => (
         <ListElementCard
-          listElement={{
+          listElementData={{
             id: equipment.id,
             name: equipment.name,
             creator: equipment.creator,

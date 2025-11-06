@@ -29,7 +29,8 @@ function NewEquipmentPage({ baseUrl }: EquipmentProps) {
   const nameInputRef = useRef<HTMLInputElement>(null);
   const descriptionInputRef = useRef<HTMLTextAreaElement>(null);
 
-  const nextStep = (steps = 1) => creationFormRef.current?.nextStep(steps);
+  const nextStep = (steps: number = 1) =>
+    creationFormRef.current?.nextStep(steps);
   const prevStep = () => creationFormRef.current?.prevStep();
 
   const [equipmentRequest, setEquipmentRequest] = useState<EquipmentRequest>({
@@ -108,9 +109,9 @@ function NewEquipmentPage({ baseUrl }: EquipmentProps) {
   const prepareDOMElements = useMemo(() => {
     return equipmentTypesList.map((type: string) => (
       <ListElementCard
-        listElement={{
+        listElementData={{
           // Edit the string enum format
-          name: type
+          title: type
             .replace("_", " ")
             .split(" ")
             .map(
@@ -139,13 +140,8 @@ function NewEquipmentPage({ baseUrl }: EquipmentProps) {
         <div className={creationFormStyles["form-slide"]} id="slide1">
           <div className={styles["form-slide-header"]}>
             Select type of equipment
-            <div className={styles["types-container"]}>
-              {prepareDOMElements}
-            </div>
           </div>
-          <div className={styles["type-select-container"]}>
-            <div className={styles.types}></div>
-          </div>
+          <div className={styles["types-container"]}>{prepareDOMElements}</div>
         </div>
         <div className={creationFormStyles["form-slide"]} id="slide2">
           <div

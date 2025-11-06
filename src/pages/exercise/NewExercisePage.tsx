@@ -2,13 +2,15 @@ import { useCookies } from "react-cookie";
 import PageBase from "../../components/base/PageBase";
 import styles from "./new-exercise.module.css";
 import creationFormStyles from "../../components/creationForm/creation-form.module.css";
-import { useEffect, useRef, useState } from "react";
+import cardStyles from "../../components/display/list/list-display.module.css";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { CreationFormRef } from "../../components/creationForm/CreationForm";
 import type { ExerciseRequest } from "../../interface/Exercise";
 import Axios from "axios";
 import CreationForm from "../../components/creationForm/CreationForm";
 import InputField from "../../components/input/InputField";
 import TextAreaField from "../../components/input/TextAreaField";
+import ListElementCard from "../../components/display/list/ListElementCard";
 
 interface NewExerciseInstancePage {
   baseUrl: string;
@@ -17,9 +19,9 @@ interface NewExerciseInstancePage {
 function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
   const [cookies] = useCookies(["token"]);
   const exerciseURL = "exercise/";
-  const exerciseTypesURL = "types";
+  const exerciseFocusURL = "domain/focus-categories";
 
-  const [exerciseTypesList, setExerciseTypesList] = useState([]);
+  const [exerciseFocusList, setExerciseFocusList] = useState([]);
   const [showAddition, setShowAddition] = useState<boolean>(false); // TODO: use to show the new exercise
 
   const creationFormRef = useRef<CreationFormRef>(null);
@@ -92,63 +94,56 @@ function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
   };
 
   useEffect(() => {
-    // Get exercise Types
-    Axios.get(baseUrl + exerciseURL + exerciseTypesURL, {
+    // Get focus categories
+    Axios.get(baseUrl + exerciseFocusURL, {
       headers: {
         Authorization: "Bearer " + cookies.token,
       },
     })
       .then((response) => {
-        setExerciseTypesList(response.data);
+        setExerciseFocusList(response.data);
       })
       .catch((error) => {
         console.log(error);
       });
   }, [baseUrl, exerciseURL]);
 
-  // const prepareDOMElements = useMemo(() => {
-  //   return exerciseTypesList.map((type: string) => (
-  //     <ListElementCard
-  //       listElement={{
-  //         // Edit the string enum format
-  //         name: type
-  //           .replace("_", " ")
-  //           .split(" ")
-  //           .map(
-  //             (word) =>
-  //               word.charAt(0).toUpperCase() + word.substring(1).toLowerCase()
-  //           )
-  //           .join(" "),
-  //       }}
-  //       extraClasses={`${styles["exercise-type-card"]} ${cardStyles["smaller-text"]}`}
-  //       onClickHandler={() => {
-  //         setexerciseType(type);
-  //         nextStep();
-  //       }}
-  //       key={type}
-  //     />
-  //   ));
-  // }, [exerciseTypesList]);
+  const prepareFocusCategoriesDOMElements = useMemo(() => {
+    return exerciseFocusList.map((focus: string) => (
+      <ListElementCard
+        listElementData={{
+          // Edit the string enum format
+          name: focus
+            .replace("_", " ")
+            .split(" ")
+            .map(
+              (word) =>
+                word.charAt(0).toUpperCase() + word.substring(1).toLowerCase()
+            )
+            .join(" "),
+        }}
+        extraClasses={` ${cardStyles["smaller-text"]}`}
+        onClickHandler={() => {
+          nextStep();
+        }}
+        key={focus}
+      />
+    ));
+  }, [exerciseFocusList]);
   return (
     <>
       <PageBase header="New exercise" />
       <div className={styles["selected-type"]}></div>
       {showAddition && <div></div>}
       <CreationForm ref={creationFormRef} onSubmitHandler={handleFormSubmit}>
-        {/* <div
-          className={creationFormStyles["form-slide"]}
-          id="slide1"
-        >
+        <div className={creationFormStyles["form-slide"]} id="slide1">
           <div className={styles["form-slide-header"]}>
             Select type of exercise
-            <div className={styles["types-container"]}>
-              {prepareDOMElements}
-            </div>
           </div>
-          <div className={styles["type-select-container"]}>
-            <div className={styles.types}></div>
+          <div className={styles["-container"]}>
+            {prepareFocusCategoriesDOMElements}
           </div>
-        </div> */}
+        </div>
         <div className={creationFormStyles["form-slide"]} id="slide2">
           <div
             onClick={() => {
@@ -173,7 +168,14 @@ function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
               inputRef={descriptionInputRef}
               handleOnKeyUp={handleDescInputOnKeyUp}
             />
-            <button>Submit</button>
+            <div
+              className={creationFormStyles["next-btn"]}
+              onClick={() => {
+                nextStep();
+              }}
+            >
+              Next
+            </div>
           </div>
         </div>
       </CreationForm>

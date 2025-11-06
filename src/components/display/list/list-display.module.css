@@ -23,7 +23,6 @@
   justify-content: flex-end;
   width: var(--element-card-width);
   height: var(--element-card-width);
-  background-color: #ebebeb55;
   border: var(--light-border);
   border-radius: 15px;
   cursor: pointer;
@@ -39,24 +38,26 @@
   height: 38%;
   min-height: fit-content;
   padding: 0 var(--text-padding);
+  background-color: #ebebeb55;
 }
 .smaller-text .element-text {
   height: 10px;
 }
 
-.element.add-new .element-text {
+/* .element.add-new .element-text {
   height: 20%;
-}
+} */
 
 .element-image {
   width: var(--element-card-width);
+  height: var(--element-card-width);
   flex: 1;
   overflow: hidden;
 }
 
-.element.add-new .element-image {
+/* .element.add-new .element-image {
   flex: 1;
-}
+} */
 
 .element-image img {
   width: 100%;
@@ -74,10 +75,14 @@
   white-space: nowrap; */
 }
 
-.element.add-new .element-name {
+.element .title {
   border: none;
   text-align: center;
+  font-weight: bold;
   padding: calc(var(--text-padding) / 1.5) 0;
+  background-color: transparent;
+  position: absolute;
+  width: 100%;
 }
 
 .element-description {

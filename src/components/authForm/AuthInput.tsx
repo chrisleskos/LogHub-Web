@@ -5,6 +5,7 @@ export interface AuthInputProps {
   ref: RefObject<HTMLInputElement | null>;
   fieldName: string;
   icon: string | React.ReactNode;
+  autocomplete?: string;
   password?: boolean;
   handleKeyUp?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
@@ -20,12 +21,12 @@ function AuthInput(inputProps: AuthInputProps) {
         {inputProps.icon}
       </span>
       <input
-        id={inputProps.fieldName.toLowerCase()}
+        id={inputProps.fieldName.toLowerCase().replace(" ", "-")}
         placeholder={
           inputProps.fieldName.charAt(0).toUpperCase() +
           inputProps.fieldName.substring(1).toLowerCase()
         }
-        autoComplete={inputProps.fieldName.toLowerCase()}
+        autoComplete={inputProps.autocomplete}
         onFocus={() => setFocusedUsername(true)}
         onBlur={() => setFocusedUsername(false)}
         type={inputProps.password ? "password" : "text"}

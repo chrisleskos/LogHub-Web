@@ -26,7 +26,10 @@ function RegisterPage({ baseUrl, path }: RegisterPageProps) {
   );
 
   const handleRepeatKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (repeatPassword.ref.current?.value === password.ref.current?.value) {
+    if (
+      repeatPassword.ref.current?.value != "" &&
+      repeatPassword.ref.current?.value === password.ref.current?.value
+    ) {
       setRepeatPasswrodIcon(<i className="fa-solid fa-check"></i>);
     } else {
       setRepeatPasswrodIcon(<i className="fa-solid fa-repeat"></i>);
@@ -38,16 +41,19 @@ function RegisterPage({ baseUrl, path }: RegisterPageProps) {
     ref: useRef<HTMLInputElement>(null),
     fieldName: "Full name",
     icon: <i className="fa-solid fa-id-card"></i>,
+    autocomplete: "cc-name",
   };
   const email: AuthInputProps = {
     ref: useRef<HTMLInputElement>(null),
     fieldName: "Email",
     icon: <i className="fa-solid fa-envelope"></i>,
+    autocomplete: "email",
   };
   const username: AuthInputProps = {
     ref: useRef<HTMLInputElement>(null),
     fieldName: "username",
     icon: "@",
+    autocomplete: "username",
   };
   const password: AuthInputProps = {
     ref: useRef<HTMLInputElement>(null),
@@ -55,6 +61,7 @@ function RegisterPage({ baseUrl, path }: RegisterPageProps) {
     icon: <i className="fa-solid fa-lock"></i>,
     password: true,
     handleKeyUp: handleRepeatKeyUp,
+    autocomplete: "off",
   };
   const repeatPassword: AuthInputProps = {
     ref: useRef<HTMLInputElement>(null),
@@ -62,6 +69,7 @@ function RegisterPage({ baseUrl, path }: RegisterPageProps) {
     icon: repeatPasswordIcon,
     password: true,
     handleKeyUp: handleRepeatKeyUp,
+    autocomplete: "off",
   };
 
   const submitLogin = (e: React.FormEvent<HTMLFormElement>) => {

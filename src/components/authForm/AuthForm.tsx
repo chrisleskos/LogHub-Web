@@ -13,7 +13,7 @@ function AuthForm({ onSubmit, inputFields, children }: AuthFormProps) {
     <>
       <form onSubmitCapture={onSubmit} className={styles.auth}>
         <div className={styles.logo}>
-          <img src="./logo-trnsp.png" />
+          <img src="/logo-trnsp.png" />
         </div>
         {inputFields.map((field, i) => (
           <AuthInput
@@ -22,6 +22,7 @@ function AuthForm({ onSubmit, inputFields, children }: AuthFormProps) {
             ref={field.ref}
             password={field.password}
             handleKeyUp={field.handleKeyUp}
+            autocomplete={field.autocomplete}
             key={i}
           />
         ))}

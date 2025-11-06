@@ -47,7 +47,7 @@ function ExercisePage({ baseUrl }: exerciseProps) {
       )
       .map((exercise: ExerciseResponse) => (
         <ListElementCard
-          listElement={{
+          listElementData={{
             id: exercise.id,
             name: exercise.name,
             creator: exercise.creator,

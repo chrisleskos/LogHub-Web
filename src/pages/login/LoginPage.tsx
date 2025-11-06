@@ -77,8 +77,6 @@ function LoginPage({ baseUrl, path }: LoginPageProps) {
           secure: false,
           httpOnly: false,
         });
-
-        console.log(response.data);
         window.location.href = "/home";
       })
       .catch(function (error) {
@@ -102,7 +100,7 @@ function LoginPage({ baseUrl, path }: LoginPageProps) {
             <div className={autFormStyles["buttons-container"]}>
               <button type="submit">Submit</button>
               <button className={autFormStyles.google}>
-                <img src="./google.png" />
+                <img src="/google.png" />
                 Google
               </button>
             </div>

@@ -18,7 +18,6 @@ const ProgressBar = forwardRef<ProgressBarRef, ProgressBarProps>(
     const stepPerc = 100 / totalSteps;
 
     const updateProgressBarLevel = (level: number) => {
-      console.log("Bar: " + level + "*" + stepPerc + "%");
       if (!progressBar.current) return;
 
       progressBar.current.style.width =
