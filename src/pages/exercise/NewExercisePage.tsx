@@ -11,6 +11,7 @@ import CreationForm from "../../components/creationForm/CreationForm";
 import InputField from "../../components/input/InputField";
 import TextAreaField from "../../components/input/TextAreaField";
 import ListElementCard from "../../components/display/list/ListElementCard";
+import EquipmentList from "../../components/display/list/specifics/EquipmentList";
 
 interface NewExerciseInstancePage {
   baseUrl: string;
@@ -19,9 +20,11 @@ interface NewExerciseInstancePage {
 function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
   const [cookies] = useCookies(["token"]);
   const exerciseURL = "exercise/";
+  const goalUnitsUrl = "goal/units";
   const exerciseFocusURL = "domain/focus-categories";
 
   const [exerciseFocusList, setExerciseFocusList] = useState([]);
+  const [goalUnitsList, setGoalUnitsList] = useState([]);
   const [showAddition, setShowAddition] = useState<boolean>(false); // TODO: use to show the new exercise
 
   const creationFormRef = useRef<CreationFormRef>(null);
@@ -31,7 +34,7 @@ function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
   const nextStep = (steps = 1) => creationFormRef.current?.nextStep(steps);
   const prevStep = () => creationFormRef.current?.prevStep();
 
-  const [exerciseRequest, setexerciseRequest] = useState<ExerciseRequest>({
+  const [exerciseRequest, setExerciseRequest] = useState<ExerciseRequest>({
     name: "",
     description: "",
     mainMuscleTarget: [],
@@ -42,7 +45,7 @@ function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
   });
 
   const setexerciseName = (name: string) => {
-    setexerciseRequest({
+    setExerciseRequest({
       name: name,
       description: exerciseRequest.description,
       mainMuscleTarget: exerciseRequest.mainMuscleTarget,
@@ -54,7 +57,7 @@ function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
   };
 
   const setexerciseDescription = (description: string) => {
-    setexerciseRequest({
+    setExerciseRequest({
       name: exerciseRequest.name,
       description: description,
       mainMuscleTarget: exerciseRequest.mainMuscleTarget,
@@ -62,6 +65,69 @@ function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
       possibleFocus: exerciseRequest.possibleFocus,
       possibleEquipment: exerciseRequest.possibleEquipment,
       possibleGoalUnits: exerciseRequest.possibleGoalUnits,
+    });
+  };
+
+  const setPossibleFocus = (focus: string) => {
+    let focusArrToBeSet = exerciseRequest.possibleFocus;
+    let index = focusArrToBeSet.indexOf(focus);
+
+    if (index === -1) {
+      focusArrToBeSet.push(focus);
+    } else {
+      focusArrToBeSet.splice(index, 1);
+    }
+
+    setExerciseRequest({
+      name: exerciseRequest.name,
+      description: exerciseRequest.description,
+      mainMuscleTarget: exerciseRequest.mainMuscleTarget,
+      secondaryMuscleTarget: exerciseRequest.secondaryMuscleTarget,
+      possibleFocus: focusArrToBeSet,
+      possibleEquipment: exerciseRequest.possibleEquipment,
+      possibleGoalUnits: exerciseRequest.possibleGoalUnits,
+    });
+  };
+
+  const setPossibleEquipment = (equipment: number) => {
+    let equipmentIdArrToBeSet = exerciseRequest.possibleEquipment;
+    let index = equipmentIdArrToBeSet.indexOf(equipment);
+
+    if (index === -1) {
+      equipmentIdArrToBeSet.push(equipment);
+    } else {
+      equipmentIdArrToBeSet.splice(index, 1);
+    }
+
+    setExerciseRequest({
+      name: exerciseRequest.name,
+      description: exerciseRequest.description,
+      mainMuscleTarget: exerciseRequest.mainMuscleTarget,
+      secondaryMuscleTarget: exerciseRequest.secondaryMuscleTarget,
+      possibleFocus: exerciseRequest.possibleFocus,
+      possibleEquipment: equipmentIdArrToBeSet,
+      possibleGoalUnits: exerciseRequest.possibleGoalUnits,
+    });
+  };
+
+  const setPossibleGoalUnits = (goalUnit: string) => {
+    let goalUnitsArrToBeSet = exerciseRequest.possibleGoalUnits;
+    let index = goalUnitsArrToBeSet.indexOf(goalUnit);
+
+    if (index === -1) {
+      goalUnitsArrToBeSet.push(goalUnit);
+    } else {
+      goalUnitsArrToBeSet.splice(index, 1);
+    }
+
+    setExerciseRequest({
+      name: exerciseRequest.name,
+      description: exerciseRequest.description,
+      mainMuscleTarget: exerciseRequest.mainMuscleTarget,
+      secondaryMuscleTarget: exerciseRequest.secondaryMuscleTarget,
+      possibleFocus: exerciseRequest.possibleFocus,
+      possibleEquipment: exerciseRequest.possibleEquipment,
+      possibleGoalUnits: goalUnitsArrToBeSet,
     });
   };
 
@@ -85,10 +151,10 @@ function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
         Authorization: "Bearer " + cookies.token,
       },
     })
-      .then((response) => {
+      .then(() => {
         nextStep();
       })
-      .catch((error) => {
+      .catch(() => {
         nextStep(2);
       });
   };
@@ -106,6 +172,19 @@ function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
       .catch((error) => {
         console.log(error);
       });
+
+    // Get goal units
+    Axios.get(baseUrl + goalUnitsUrl, {
+      headers: {
+        Authorization: "Bearer " + cookies.token,
+      },
+    })
+      .then((response) => {
+        setGoalUnitsList(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, [baseUrl, exerciseURL]);
 
   const prepareFocusCategoriesDOMElements = useMemo(() => {
@@ -113,7 +192,7 @@ function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
       <ListElementCard
         listElementData={{
           // Edit the string enum format
-          name: focus
+          title: focus
             .replace("_", " ")
             .split(" ")
             .map(
@@ -121,28 +200,69 @@ function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
                 word.charAt(0).toUpperCase() + word.substring(1).toLowerCase()
             )
             .join(" "),
+          imageSrc: "/" + focus.toLowerCase() + "-icon.png",
         }}
-        extraClasses={` ${cardStyles["smaller-text"]}`}
+        extraClasses={`${cardStyles["smaller-text"]} `}
+        isSelected={exerciseRequest.possibleFocus.includes(focus)}
         onClickHandler={() => {
-          nextStep();
+          setPossibleFocus(focus);
         }}
         key={focus}
       />
     ));
-  }, [exerciseFocusList]);
+  }, [exerciseFocusList, exerciseRequest]);
+
+  const prepareGoalUnitsDOMElements = useMemo(() => {
+    return goalUnitsList.map((goal: string) => (
+      <ListElementCard
+        listElementData={{
+          // Edit the string enum format
+          title: goal
+            .replace("_", " ")
+            .split(" ")
+            .map(
+              (word) =>
+                word.charAt(0).toUpperCase() + word.substring(1).toLowerCase()
+            )
+            .join(" "),
+          imageSrc: "/" + goal.toLowerCase() + "-icon.png",
+        }}
+        extraClasses={`${cardStyles["smaller-text"]} `}
+        isSelected={exerciseRequest.possibleGoalUnits.includes(goal)}
+        onClickHandler={() => {
+          setPossibleGoalUnits(goal);
+        }}
+        key={goal}
+      />
+    ));
+  }, [exerciseFocusList, exerciseRequest]);
   return (
     <>
       <PageBase header="New exercise" />
-      <div className={styles["selected-type"]}></div>
+      <div className={styles["selected-type"]}>
+        {exerciseRequest.possibleFocus.map((focus) => (
+          <span key={"selected-focus-" + focus}> #{focus.toLowerCase()} </span>
+        ))}
+      </div>
       {showAddition && <div></div>}
       <CreationForm ref={creationFormRef} onSubmitHandler={handleFormSubmit}>
         <div className={creationFormStyles["form-slide"]} id="slide1">
           <div className={styles["form-slide-header"]}>
             Select type of exercise
           </div>
-          <div className={styles["-container"]}>
+          <div className={styles["focus-categories-container"]}>
             {prepareFocusCategoriesDOMElements}
           </div>
+          {exerciseRequest.possibleFocus.length > 0 && (
+            <div
+              className={creationFormStyles["next-btn"]}
+              onClick={() => {
+                nextStep();
+              }}
+            >
+              Next
+            </div>
+          )}
         </div>
         <div className={creationFormStyles["form-slide"]} id="slide2">
           <div
@@ -176,6 +296,59 @@ function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
             >
               Next
             </div>
+          </div>
+        </div>
+        <div className={creationFormStyles["form-slide"]} id="slide3">
+          <div className={styles["form-slide-header"]}>
+            What equipment can be used for this exercise?
+          </div>
+          <div
+            onClick={() => {
+              prevStep();
+            }}
+            className={creationFormStyles.step}
+          >
+            &#60; Back
+          </div>
+          <EquipmentList
+            baseUrl={baseUrl}
+            haveAddBtn={false}
+            handleOnElementClick={(id: number) => {
+              setPossibleEquipment(id);
+            }}
+            idList={exerciseRequest.possibleEquipment}
+          />
+          <div
+            className={creationFormStyles["next-btn"]}
+            onClick={() => {
+              nextStep();
+            }}
+          >
+            Next
+          </div>
+        </div>
+        <div className={creationFormStyles["form-slide"]} id="slide4">
+          <div className={styles["form-slide-header"]}>
+            What units could the performance be measured on?
+          </div>
+          <div
+            onClick={() => {
+              prevStep();
+            }}
+            className={creationFormStyles.step}
+          >
+            &#60; Back
+          </div>
+          <div className={styles["focus-categories-container"]}>
+            {prepareGoalUnitsDOMElements}
+          </div>
+          <div
+            className={creationFormStyles["next-btn"]}
+            onClick={() => {
+              nextStep();
+            }}
+          >
+            Next
           </div>
         </div>
       </CreationForm>

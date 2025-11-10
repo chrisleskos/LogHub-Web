@@ -5,17 +5,21 @@ import type { ListElementData } from "./ListElementData";
 interface ListElementCardProps {
   onClickHandler?: MouseEventHandler<HTMLDivElement>;
   extraClasses?: string;
+  isSelected?: boolean;
   listElementData: ListElementData;
 }
 
 function ListElementCard({
   onClickHandler,
   extraClasses,
+  isSelected,
   listElementData,
 }: ListElementCardProps) {
   return (
     <div
-      className={`${styles.element} ${extraClasses}`}
+      className={`${styles.element} ${
+        isSelected ? styles.selected : ""
+      } ${extraClasses}`}
       onClick={onClickHandler}
     >
       {listElementData.creator && (

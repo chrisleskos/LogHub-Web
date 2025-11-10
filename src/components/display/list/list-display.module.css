@@ -1,5 +1,6 @@
 :root {
   --element-card-width: 210px;
+  --element-card-height: 210px;
   --text-padding: 20px;
 }
 
@@ -22,12 +23,20 @@
   flex-direction: column;
   justify-content: flex-end;
   width: var(--element-card-width);
-  height: var(--element-card-width);
+  height: var(--element-card-height);
   border: var(--light-border);
   border-radius: 15px;
   cursor: pointer;
   margin: 0.5rem;
   overflow: hidden;
+}
+.element.smaller-text {
+  --element-card-width: 170px;
+  --element-card-height: 80px;
+}
+.element.selected {
+  outline: var(--selected-border);
+  box-shadow: 0px 0px 13px 1px #00000022;
 }
 
 .element:hover {
@@ -40,7 +49,7 @@
   padding: 0 var(--text-padding);
   background-color: #ebebeb55;
 }
-.smaller-text .element-text {
+.element.smaller-text .element-text {
   height: 10px;
 }
 
@@ -50,9 +59,10 @@
 
 .element-image {
   width: var(--element-card-width);
-  height: var(--element-card-width);
+  height: var(--element-card-height);
   flex: 1;
   overflow: hidden;
+  text-align: center;
 }
 
 /* .element.add-new .element-image {
@@ -60,8 +70,15 @@
 } */
 
 .element-image img {
+  margin: 0 auto;
   width: 100%;
   height: auto;
+  opacity: 0.9;
+}
+
+.smaller-text .element-image img {
+  height: 68%;
+  width: auto;
 }
 
 .element-name {
@@ -79,7 +96,7 @@
   border: none;
   text-align: center;
   font-weight: bold;
-  padding: calc(var(--text-padding) / 1.5) 0;
+  padding: 5px 0;
   background-color: transparent;
   position: absolute;
   width: 100%;

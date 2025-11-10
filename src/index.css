@@ -15,6 +15,7 @@
   --background-color: #efefef;
   --activated-color: rgb(136, 184, 232);
   --light-border: 1.5px solid #e2e2e2ff;
+  --selected-border: 3px solid var(--activated-color);
   --input-bg-color: #e9e9e955;
 }
 

@@ -1,4 +1,4 @@
-import type { EquipmentRequest, EquipmentResponse } from "./Equipment";
+import type { EquipmentResponse } from "./Equipment";
 
 export type ExerciseRequest = {
   name: string;
@@ -6,7 +6,7 @@ export type ExerciseRequest = {
   mainMuscleTarget: string[];
   secondaryMuscleTarget: string[];
   possibleFocus: string[];
-  possibleEquipment: EquipmentRequest[];
+  possibleEquipment: number[];
   possibleGoalUnits: string[];
 };
 

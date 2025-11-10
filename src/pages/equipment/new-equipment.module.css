@@ -15,10 +15,6 @@
   font-weight: 600;
 }
 
-.equipment-type-card {
-  --element-card-width: 170px;
-}
-
 .selected-type {
   display: inline-block;
   font-size: 0.9rem;
