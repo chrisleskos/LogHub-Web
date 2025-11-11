@@ -12,6 +12,7 @@ import InputField from "../../components/input/InputField";
 import TextAreaField from "../../components/input/TextAreaField";
 import ListElementCard from "../../components/display/list/ListElementCard";
 import EquipmentList from "../../components/display/list/specifics/EquipmentList";
+import type { MuscleTarget } from "../../interface/Muscle";
 
 interface NewExerciseInstancePage {
   baseUrl: string;
@@ -21,12 +22,17 @@ function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
   const [cookies] = useCookies(["token"]);
   const exerciseURL = "exercise/";
   const goalUnitsUrl = "goal/units";
-  const muscleGroupsUrl = "muscle-groups";
+  const muscleTargetsUrl = "muscle-targets";
   const exerciseFocusURL = "domain/focus-categories";
 
   const [exerciseFocusList, setExerciseFocusList] = useState([]);
   const [goalUnitsList, setGoalUnitsList] = useState([]);
-  const [muscleGroupsList, setMuscleGroupsList] = useState([]);
+  const [muscleTargetsList, setMuscleTargetsList] = useState([]);
+  const [selectedMainMuscleTargets, setSelectedMainMuscleTargets] = useState<
+    string[]
+  >([]);
+  const [selectedSecondaryMuscleTargets, setSelectedSecondaryMuscleTargets] =
+    useState<string[]>([]);
   const [showMainMuscleSelector, setShowMainMuscleSelector] = useState(false);
   const [showSecondaryMuscleSelector, setShowSecondaryMuscleSelector] =
     useState(false);
@@ -50,89 +56,70 @@ function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
   });
 
   const setexerciseName = (name: string) => {
-    setExerciseRequest({
+    setExerciseRequest((prev) => ({
+      ...prev,
       name: name,
-      description: exerciseRequest.description,
-      mainMuscleTarget: exerciseRequest.mainMuscleTarget,
-      secondaryMuscleTarget: exerciseRequest.secondaryMuscleTarget,
-      possibleFocus: exerciseRequest.possibleFocus,
-      possibleEquipment: exerciseRequest.possibleEquipment,
-      possibleGoalUnits: exerciseRequest.possibleGoalUnits,
-    });
+    }));
   };
 
   const setexerciseDescription = (description: string) => {
-    setExerciseRequest({
-      name: exerciseRequest.name,
+    setExerciseRequest((prev) => ({
+      ...prev,
       description: description,
-      mainMuscleTarget: exerciseRequest.mainMuscleTarget,
-      secondaryMuscleTarget: exerciseRequest.secondaryMuscleTarget,
-      possibleFocus: exerciseRequest.possibleFocus,
-      possibleEquipment: exerciseRequest.possibleEquipment,
-      possibleGoalUnits: exerciseRequest.possibleGoalUnits,
-    });
+    }));
   };
 
   const setPossibleFocus = (focus: string) => {
-    let focusArrToBeSet = exerciseRequest.possibleFocus;
-    let index = focusArrToBeSet.indexOf(focus);
-
-    if (index === -1) {
-      focusArrToBeSet.push(focus);
-    } else {
-      focusArrToBeSet.splice(index, 1);
-    }
-
-    setExerciseRequest({
-      name: exerciseRequest.name,
-      description: exerciseRequest.description,
-      mainMuscleTarget: exerciseRequest.mainMuscleTarget,
-      secondaryMuscleTarget: exerciseRequest.secondaryMuscleTarget,
-      possibleFocus: focusArrToBeSet,
-      possibleEquipment: exerciseRequest.possibleEquipment,
-      possibleGoalUnits: exerciseRequest.possibleGoalUnits,
-    });
+    setExerciseRequest((prev) => ({
+      ...prev,
+      possibleFocus: prev.possibleFocus.includes(focus)
+        ? prev.possibleFocus.filter((u) => u !== focus)
+        : [...prev.possibleFocus, focus],
+    }));
   };
 
   const setPossibleEquipment = (equipment: number) => {
-    let equipmentIdArrToBeSet = exerciseRequest.possibleEquipment;
-    let index = equipmentIdArrToBeSet.indexOf(equipment);
-
-    if (index === -1) {
-      equipmentIdArrToBeSet.push(equipment);
-    } else {
-      equipmentIdArrToBeSet.splice(index, 1);
-    }
-
-    setExerciseRequest({
-      name: exerciseRequest.name,
-      description: exerciseRequest.description,
-      mainMuscleTarget: exerciseRequest.mainMuscleTarget,
-      secondaryMuscleTarget: exerciseRequest.secondaryMuscleTarget,
-      possibleFocus: exerciseRequest.possibleFocus,
-      possibleEquipment: equipmentIdArrToBeSet,
-      possibleGoalUnits: exerciseRequest.possibleGoalUnits,
-    });
+    setExerciseRequest((prev) => ({
+      ...prev,
+      possibleEquipment: prev.possibleEquipment.includes(equipment)
+        ? prev.possibleEquipment.filter((u) => u !== equipment)
+        : [...prev.possibleEquipment, equipment],
+    }));
   };
 
   const setPossibleGoalUnits = (goalUnit: string) => {
-    let goalUnitsArrToBeSet = exerciseRequest.possibleGoalUnits;
-    let index = goalUnitsArrToBeSet.indexOf(goalUnit);
+    setExerciseRequest((prev) => ({
+      ...prev,
+      possibleGoalUnits: prev.possibleGoalUnits.includes(goalUnit)
+        ? prev.possibleGoalUnits.filter((u) => u !== goalUnit)
+        : [...prev.possibleGoalUnits, goalUnit],
+    }));
+  };
 
-    if (index === -1) {
-      goalUnitsArrToBeSet.push(goalUnit);
-    } else {
-      goalUnitsArrToBeSet.splice(index, 1);
-    }
+  const addNewGroupTargets = () => {};
 
-    setExerciseRequest({
-      name: exerciseRequest.name,
-      description: exerciseRequest.description,
-      mainMuscleTarget: exerciseRequest.mainMuscleTarget,
-      secondaryMuscleTarget: exerciseRequest.secondaryMuscleTarget,
-      possibleFocus: exerciseRequest.possibleFocus,
-      possibleEquipment: exerciseRequest.possibleEquipment,
-      possibleGoalUnits: goalUnitsArrToBeSet,
+  const toggleMainMuscleGroup = (muscle: string) => {
+    let a = setSelectedMainMuscleTargets((prev) => {
+      if (prev.includes(muscle)) {
+        // remove
+        return prev.filter((m) => m !== muscle);
+      } else {
+        // add
+        return [...prev, muscle];
+      }
+    });
+    console.log(a);
+  };
+
+  const toggleSecondaryMuscleGroup = (muscle: string) => {
+    setSelectedSecondaryMuscleTargets((prev) => {
+      if (prev.includes(muscle)) {
+        // remove
+        return prev.filter((m) => m !== muscle);
+      } else {
+        // add
+        return [...prev, muscle];
+      }
     });
   };
 
@@ -192,18 +179,23 @@ function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
       });
 
     // Get muscle groups
-    Axios.get(baseUrl + exerciseURL + muscleGroupsUrl, {
+    Axios.get(baseUrl + exerciseURL + muscleTargetsUrl, {
       headers: {
         Authorization: "Bearer " + cookies.token,
       },
     })
       .then((response) => {
-        setMuscleGroupsList(response.data);
+        console.log(response);
+        setMuscleTargetsList(response.data);
       })
       .catch((error) => {
         console.log(error);
       });
   }, [baseUrl, exerciseURL]);
+
+  const muscleGroupList = useMemo(() => {
+    return [...new Set(muscleTargetsList.map((t: MuscleTarget) => t.group))];
+  }, [muscleTargetsList]);
 
   const prepareFocusCategoriesDOMElements = useMemo(() => {
     return exerciseFocusList.map((focus: string) => (
@@ -220,7 +212,7 @@ function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
             .join(" "),
           imageSrc: "/" + focus.toLowerCase() + "-icon.png",
         }}
-        extraClasses={`${cardStyles["smaller-text"]} `}
+        extraClasses={`${cardStyles.small} `}
         isSelected={exerciseRequest.possibleFocus.includes(focus)}
         onClickHandler={() => {
           setPossibleFocus(focus);
@@ -245,7 +237,7 @@ function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
             .join(" "),
           imageSrc: "/" + goal.toLowerCase() + "-icon.png",
         }}
-        extraClasses={`${cardStyles["smaller-text"]} `}
+        extraClasses={`${cardStyles.small} `}
         isSelected={exerciseRequest.possibleGoalUnits.includes(goal)}
         onClickHandler={() => {
           setPossibleGoalUnits(goal);
@@ -253,10 +245,10 @@ function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
         key={goal}
       />
     ));
-  }, [exerciseFocusList, exerciseRequest]);
+  }, [goalUnitsList, exerciseRequest]);
 
-  const prepareMainMuscleGroupsDOMElements = useMemo(() => {
-    return muscleGroupsList.map((muscle: string) => (
+  const prepareMainMuscleTargetsDOMElements = useMemo(() => {
+    return muscleGroupList.map((muscle: string) => (
       <ListElementCard
         listElementData={{
           // Edit the string enum format
@@ -270,18 +262,18 @@ function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
             .join(" "),
           imageSrc: "/" + muscle.toLowerCase() + "-icon.png",
         }}
-        extraClasses={`${cardStyles["smaller-text"]} `}
-        isSelected={exerciseRequest.possibleGoalUnits.includes(muscle)}
+        extraClasses={`${cardStyles.small} `}
+        isSelected={selectedMainMuscleTargets.includes(muscle)}
         onClickHandler={() => {
-          // setPossibleGoalUnits(muscle);
+          toggleMainMuscleGroup(muscle);
         }}
         key={muscle + "1"}
       />
     ));
-  }, [exerciseFocusList, exerciseRequest]);
+  }, [muscleTargetsList, selectedMainMuscleTargets]);
 
-  const prepareSecondaryMuscleGroupsDOMElements = useMemo(() => {
-    return muscleGroupsList.map((muscle: string) => (
+  const prepareSecondaryMuscleTargetsDOMElements = useMemo(() => {
+    return muscleGroupList.map((muscle: string) => (
       <ListElementCard
         listElementData={{
           // Edit the string enum format
@@ -295,15 +287,69 @@ function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
             .join(" "),
           imageSrc: "/" + muscle.toLowerCase() + "-icon.png",
         }}
-        extraClasses={`${cardStyles["smaller-text"]} `}
-        isSelected={exerciseRequest.possibleGoalUnits.includes(muscle)}
+        extraClasses={`${cardStyles.small} `}
+        isSelected={selectedSecondaryMuscleTargets.includes(muscle)}
         onClickHandler={() => {
-          // setPossibleGoalUnits(muscle);
+          toggleSecondaryMuscleGroup(muscle);
         }}
-        key={muscle + "1"}
+        key={muscle + "2"}
       />
     ));
-  }, [exerciseFocusList, exerciseRequest]);
+  }, [muscleTargetsList, selectedSecondaryMuscleTargets]);
+
+  const prepareSelectedMainMuscleTargetsDOMElements = useMemo(() => {
+    return selectedMainMuscleTargets.map((muscle: string) => (
+      <ListElementCard
+        listElementData={{
+          // Edit the string enum format
+          title: muscle
+            .replace("_", " ")
+            .split(" ")
+            .map(
+              (word) =>
+                word.charAt(0).toUpperCase() + word.substring(1).toLowerCase()
+            )
+            .join(" "),
+          imageSrc: "/" + muscle.toLowerCase() + "-icon.png",
+        }}
+        extraClasses={`${cardStyles.small} `}
+        key={muscle + "11"}
+      >
+        {muscleTargetsList
+          .filter((t: MuscleTarget) => t.group === muscle)
+          .map((t: MuscleTarget) => (
+            <div>{t.name}</div>
+          ))}
+      </ListElementCard>
+    ));
+  }, [selectedMainMuscleTargets]);
+
+  const prepareSelectedSecondaryMuscleTargetsDOMElements = useMemo(() => {
+    return selectedSecondaryMuscleTargets.map((muscle: string) => (
+      <ListElementCard
+        listElementData={{
+          // Edit the string enum format
+          title: muscle
+            .replace("_", " ")
+            .split(" ")
+            .map(
+              (word) =>
+                word.charAt(0).toUpperCase() + word.substring(1).toLowerCase()
+            )
+            .join(" "),
+          imageSrc: "/" + muscle.toLowerCase() + "-icon.png",
+        }}
+        extraClasses={`${cardStyles.small} `}
+        key={muscle + "11"}
+      >
+        {muscleTargetsList
+          .filter((t: MuscleTarget) => t.group === muscle)
+          .map((t: MuscleTarget) => (
+            <div>{t.name}</div>
+          ))}
+      </ListElementCard>
+    ));
+  }, [selectedSecondaryMuscleTargets]);
 
   return (
     <>
@@ -317,7 +363,7 @@ function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
       <CreationForm ref={creationFormRef} onSubmitHandler={handleFormSubmit}>
         <div className={creationFormStyles["form-slide"]} id="slide1">
           <div className={styles["form-slide-header"]}>
-            Select type of exercise
+            Select what the exercise can focus on.
           </div>
           <div className={styles["focus-categories-container"]}>
             {prepareFocusCategoriesDOMElements}
@@ -405,15 +451,16 @@ function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
             &#60; Back
           </div>
           <div className={styles["focus-categories-containr"]}>
-            <h2>Main muscle</h2>
-            <div>
+            <div className={styles.header}>Main muscle</div>
+            <div className={styles["selected-muscles"]}>
               <ListElementCard
                 listElementData={{ title: "Add", imageSrc: "/add.png" }}
-                extraClasses={cardStyles["smaller-text"]}
+                extraClasses={cardStyles.small}
                 onClickHandler={() => {
                   setShowMainMuscleSelector(true);
                 }}
               />
+              {prepareSelectedMainMuscleTargetsDOMElements}
             </div>
             {showMainMuscleSelector && (
               <div className={styles["selector-window"]}>
@@ -427,21 +474,21 @@ function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
                     &times;
                   </div>
                   <div className={styles.body}>
-                    {prepareMainMuscleGroupsDOMElements}
+                    {prepareMainMuscleTargetsDOMElements}
                   </div>
                 </div>
               </div>
             )}
-            <h2>Secondary muscle</h2>
-            <div>
-              {" "}
+            <div className={styles.header}>Secondary muscle</div>
+            <div className={styles["selected-muscles"]}>
               <ListElementCard
                 listElementData={{ title: "Add", imageSrc: "/add.png" }}
-                extraClasses={cardStyles["smaller-text"]}
+                extraClasses={cardStyles.small}
                 onClickHandler={() => {
                   setShowSecondaryMuscleSelector(true);
                 }}
               />
+              {prepareSelectedSecondaryMuscleTargetsDOMElements}
             </div>
             {showSecondaryMuscleSelector && (
               <div className={styles["selector-window"]}>
@@ -455,7 +502,7 @@ function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
                     &times;
                   </div>
                   <div className={styles.body}>
-                    {prepareSecondaryMuscleGroupsDOMElements}
+                    {prepareSecondaryMuscleTargetsDOMElements}
                   </div>
                 </div>
               </div>

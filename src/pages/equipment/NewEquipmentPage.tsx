@@ -120,7 +120,7 @@ function NewEquipmentPage({ baseUrl }: EquipmentProps) {
             )
             .join(" "),
         }}
-        extraClasses={`${cardStyles["smaller-text"]}`}
+        extraClasses={`${cardStyles["small"]}`}
         onClickHandler={() => {
           setEquipmentType(type);
           nextStep();
