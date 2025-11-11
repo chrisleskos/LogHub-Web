@@ -83,10 +83,10 @@ function NewEquipmentPage({ baseUrl }: EquipmentProps) {
         Authorization: "Bearer " + cookies.token,
       },
     })
-      .then((response) => {
+      .then(() => {
         nextStep();
       })
-      .catch((error) => {
+      .catch(() => {
         nextStep(2);
       });
   };

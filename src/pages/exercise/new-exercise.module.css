@@ -30,3 +30,48 @@
   color: white;
   font-weight: 600;
 }
+
+.selector-window {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  left: 50%;
+  top: 50%;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 20;
+}
+
+.selector-window .main {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 25px;
+  gap: 1rem;
+  background-color: white;
+  width: 50%;
+  height: 60%;
+  border-radius: 15px;
+  border: var(--light-border);
+  box-shadow: 0 0 150px 1px rgba(0, 0, 0, 0.5);
+}
+
+.selector-window .header {
+  display: inline;
+  height: 1rem;
+  width: fit-content;
+  align-self: flex-end;
+  font-size: 2rem;
+  text-align: right;
+  cursor: pointer;
+}
+
+.selector-window .body {
+  display: flex;
+  flex-wrap: wrap;
+  flex: 1;
+  margin-top: 2rem;
+}

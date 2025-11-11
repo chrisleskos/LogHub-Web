@@ -21,10 +21,15 @@ function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
   const [cookies] = useCookies(["token"]);
   const exerciseURL = "exercise/";
   const goalUnitsUrl = "goal/units";
+  const muscleGroupsUrl = "muscle-groups";
   const exerciseFocusURL = "domain/focus-categories";
 
   const [exerciseFocusList, setExerciseFocusList] = useState([]);
   const [goalUnitsList, setGoalUnitsList] = useState([]);
+  const [muscleGroupsList, setMuscleGroupsList] = useState([]);
+  const [showMainMuscleSelector, setShowMainMuscleSelector] = useState(false);
+  const [showSecondaryMuscleSelector, setShowSecondaryMuscleSelector] =
+    useState(false);
   const [showAddition, setShowAddition] = useState<boolean>(false); // TODO: use to show the new exercise
 
   const creationFormRef = useRef<CreationFormRef>(null);
@@ -185,6 +190,19 @@ function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
       .catch((error) => {
         console.log(error);
       });
+
+    // Get muscle groups
+    Axios.get(baseUrl + exerciseURL + muscleGroupsUrl, {
+      headers: {
+        Authorization: "Bearer " + cookies.token,
+      },
+    })
+      .then((response) => {
+        setMuscleGroupsList(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, [baseUrl, exerciseURL]);
 
   const prepareFocusCategoriesDOMElements = useMemo(() => {
@@ -236,6 +254,57 @@ function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
       />
     ));
   }, [exerciseFocusList, exerciseRequest]);
+
+  const prepareMainMuscleGroupsDOMElements = useMemo(() => {
+    return muscleGroupsList.map((muscle: string) => (
+      <ListElementCard
+        listElementData={{
+          // Edit the string enum format
+          title: muscle
+            .replace("_", " ")
+            .split(" ")
+            .map(
+              (word) =>
+                word.charAt(0).toUpperCase() + word.substring(1).toLowerCase()
+            )
+            .join(" "),
+          imageSrc: "/" + muscle.toLowerCase() + "-icon.png",
+        }}
+        extraClasses={`${cardStyles["smaller-text"]} `}
+        isSelected={exerciseRequest.possibleGoalUnits.includes(muscle)}
+        onClickHandler={() => {
+          // setPossibleGoalUnits(muscle);
+        }}
+        key={muscle + "1"}
+      />
+    ));
+  }, [exerciseFocusList, exerciseRequest]);
+
+  const prepareSecondaryMuscleGroupsDOMElements = useMemo(() => {
+    return muscleGroupsList.map((muscle: string) => (
+      <ListElementCard
+        listElementData={{
+          // Edit the string enum format
+          title: muscle
+            .replace("_", " ")
+            .split(" ")
+            .map(
+              (word) =>
+                word.charAt(0).toUpperCase() + word.substring(1).toLowerCase()
+            )
+            .join(" "),
+          imageSrc: "/" + muscle.toLowerCase() + "-icon.png",
+        }}
+        extraClasses={`${cardStyles["smaller-text"]} `}
+        isSelected={exerciseRequest.possibleGoalUnits.includes(muscle)}
+        onClickHandler={() => {
+          // setPossibleGoalUnits(muscle);
+        }}
+        key={muscle + "1"}
+      />
+    ));
+  }, [exerciseFocusList, exerciseRequest]);
+
   return (
     <>
       <PageBase header="New exercise" />
@@ -300,35 +369,6 @@ function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
         </div>
         <div className={creationFormStyles["form-slide"]} id="slide3">
           <div className={styles["form-slide-header"]}>
-            What equipment can be used for this exercise?
-          </div>
-          <div
-            onClick={() => {
-              prevStep();
-            }}
-            className={creationFormStyles.step}
-          >
-            &#60; Back
-          </div>
-          <EquipmentList
-            baseUrl={baseUrl}
-            haveAddBtn={false}
-            handleOnElementClick={(id: number) => {
-              setPossibleEquipment(id);
-            }}
-            idList={exerciseRequest.possibleEquipment}
-          />
-          <div
-            className={creationFormStyles["next-btn"]}
-            onClick={() => {
-              nextStep();
-            }}
-          >
-            Next
-          </div>
-        </div>
-        <div className={creationFormStyles["form-slide"]} id="slide4">
-          <div className={styles["form-slide-header"]}>
             What units could the performance be measured on?
           </div>
           <div
@@ -350,6 +390,107 @@ function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
           >
             Next
           </div>
+        </div>
+        <div className={creationFormStyles["form-slide"]} id="slide4">
+          <div className={styles["form-slide-header"]}>
+            Select main and secondary muscle targets of the exercise (if any
+            specific). They will later help in categorization and statistics.
+          </div>
+          <div
+            onClick={() => {
+              prevStep();
+            }}
+            className={creationFormStyles.step}
+          >
+            &#60; Back
+          </div>
+          <div className={styles["focus-categories-containr"]}>
+            <h2>Main muscle</h2>
+            <div>
+              <ListElementCard
+                listElementData={{ title: "Add", imageSrc: "/add.png" }}
+                extraClasses={cardStyles["smaller-text"]}
+                onClickHandler={() => {
+                  setShowMainMuscleSelector(true);
+                }}
+              />
+            </div>
+            {showMainMuscleSelector && (
+              <div className={styles["selector-window"]}>
+                <div className={styles.main}>
+                  <div
+                    className={styles.header}
+                    onClick={() => {
+                      setShowMainMuscleSelector(false);
+                    }}
+                  >
+                    &times;
+                  </div>
+                  <div className={styles.body}>
+                    {prepareMainMuscleGroupsDOMElements}
+                  </div>
+                </div>
+              </div>
+            )}
+            <h2>Secondary muscle</h2>
+            <div>
+              {" "}
+              <ListElementCard
+                listElementData={{ title: "Add", imageSrc: "/add.png" }}
+                extraClasses={cardStyles["smaller-text"]}
+                onClickHandler={() => {
+                  setShowSecondaryMuscleSelector(true);
+                }}
+              />
+            </div>
+            {showSecondaryMuscleSelector && (
+              <div className={styles["selector-window"]}>
+                <div className={styles.main}>
+                  <div
+                    className={styles.header}
+                    onClick={() => {
+                      setShowSecondaryMuscleSelector(false);
+                    }}
+                  >
+                    &times;
+                  </div>
+                  <div className={styles.body}>
+                    {prepareSecondaryMuscleGroupsDOMElements}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+          <div
+            className={creationFormStyles["next-btn"]}
+            onClick={() => {
+              nextStep();
+            }}
+          >
+            Next
+          </div>
+        </div>
+        <div className={creationFormStyles["form-slide"]} id="slide5">
+          <div className={styles["form-slide-header"]}>
+            What equipment can be used for this exercise?
+          </div>
+          <div
+            onClick={() => {
+              prevStep();
+            }}
+            className={creationFormStyles.step}
+          >
+            &#60; Back
+          </div>
+          <EquipmentList
+            baseUrl={baseUrl}
+            haveAddBtn={false}
+            handleOnElementClick={(id: number) => {
+              setPossibleEquipment(id);
+            }}
+            idList={exerciseRequest.possibleEquipment}
+          />
+          <button>Submit</button>
         </div>
       </CreationForm>
     </>
