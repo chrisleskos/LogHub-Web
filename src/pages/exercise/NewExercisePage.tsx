@@ -97,7 +97,7 @@ function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
     }));
   };
 
-  const addMainMuscleTarget = (target: string) => {
+  const setMainMuscleTarget = (target: string) => {
     setExerciseRequest((prev) => ({
       ...prev,
       mainMuscleTarget: prev.mainMuscleTarget.includes(target)
@@ -109,7 +109,7 @@ function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
     }));
   };
 
-  const addSecondaryMuscleTarget = (target: string) => {
+  const setSecondaryMuscleTarget = (target: string) => {
     setExerciseRequest((prev) => ({
       ...prev,
       mainMuscleTarget: prev.mainMuscleTarget.filter((t) => t !== target),
@@ -119,28 +119,93 @@ function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
     }));
   };
 
-  const addNewGroupTargets = () => {};
+  const addNewMainGroupTargets = (muscle: string) => {
+    setExerciseRequest((prev) => {
+      const secondarySet = new Set(prev.secondaryMuscleTarget);
+      const groupTargets = muscleTargetsList
+        .filter(
+          (t: MuscleTarget) => t.group === muscle && !secondarySet.has(t.name)
+        )
+        .map((t: MuscleTarget) => t.name);
+      console.log(groupTargets);
+      return {
+        ...prev,
+        mainMuscleTarget: Array.from(
+          new Set([...prev.mainMuscleTarget, ...groupTargets])
+        ),
+      };
+    });
+  };
 
-  const toggleMainMuscleGroup = (muscle: string) => {
-    let a = setSelectedMainMuscleGroups((prev) => {
+  const addNewSecondaryGroupTargets = (muscle: string) => {
+    setExerciseRequest((prev) => {
+      const mainSet = new Set(prev.mainMuscleTarget);
+      const groupTargets = muscleTargetsList
+        .filter((t: MuscleTarget) => t.group === muscle && !mainSet.has(t.name))
+        .map((t: MuscleTarget) => t.name);
+      console.log(groupTargets);
+
+      return {
+        ...prev,
+        secondaryMuscleTarget: Array.from(
+          new Set([...prev.secondaryMuscleTarget, ...groupTargets])
+        ),
+      };
+    });
+  };
+
+  const removeMainGroupTargets = (muscle: string) => {
+    let groupTargets = muscleTargetsList.filter(
+      (t: MuscleTarget) =>
+        t.group === muscle &&
+        !exerciseRequest.secondaryMuscleTarget.includes(t.name)
+    );
+
+    setExerciseRequest((prev) => ({
+      ...prev,
+      mainMuscleTarget: prev.mainMuscleTarget.filter((t) =>
+        groupTargets.every((gt: MuscleTarget) => gt.name != t)
+      ),
+    }));
+  };
+
+  const removeSecondaryGroupTargets = (muscle: string) => {
+    let groupTargets = muscleTargetsList.filter(
+      (t: MuscleTarget) =>
+        t.group === muscle && !exerciseRequest.mainMuscleTarget.includes(t.name)
+    );
+
+    setExerciseRequest((prev) => ({
+      ...prev,
+      secondaryMuscleTarget: prev.secondaryMuscleTarget.filter((t) =>
+        groupTargets.every((gt: MuscleTarget) => gt.name != t)
+      ),
+    }));
+  };
+
+  const toggleSelectedMainMuscleGroup = (muscle: string) => {
+    setSelectedMainMuscleGroups((prev) => {
       if (prev.includes(muscle)) {
         // remove
+        removeMainGroupTargets(muscle);
         return prev.filter((m) => m !== muscle);
       } else {
         // add
+        addNewMainGroupTargets(muscle);
         return [...prev, muscle];
       }
     });
-    console.log(a);
   };
 
   const toggleSelectedSecondaryMuscleGroup = (muscle: string) => {
     setSelectedSecondaryMuscleGroups((prev) => {
       if (prev.includes(muscle)) {
         // remove
+        removeSecondaryGroupTargets(muscle);
         return prev.filter((m) => m !== muscle);
       } else {
         // add
+        addNewSecondaryGroupTargets(muscle);
         return [...prev, muscle];
       }
     });
@@ -158,7 +223,7 @@ function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
 
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    console.log(exerciseRequest);
     nextStep();
 
     Axios.post(baseUrl + exerciseURL, exerciseRequest, {
@@ -289,7 +354,7 @@ function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
         extraClasses={`${cardStyles.small} `}
         isSelected={selectedMainMuscleGroups.includes(muscle)}
         onClickHandler={() => {
-          toggleMainMuscleGroup(muscle);
+          toggleSelectedMainMuscleGroup(muscle);
         }}
         key={muscle + "1"}
       />
@@ -351,7 +416,8 @@ function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
                     : ""
                 }
               `}
-              onClick={() => addMainMuscleTarget(t.name)}
+              onClick={() => setMainMuscleTarget(t.name)}
+              key={t.name}
             >
               {exerciseRequest.mainMuscleTarget.includes(t.name) && (
                 <span>&#10003;</span>
@@ -404,7 +470,7 @@ function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
                     : ""
                 }
               `}
-              onClick={() => addSecondaryMuscleTarget(t.name)}
+              onClick={() => setSecondaryMuscleTarget(t.name)}
             >
               {exerciseRequest.secondaryMuscleTarget.includes(t.name) && (
                 <span>&#10003;</span>
@@ -539,6 +605,7 @@ function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
                 listElementData={{ title: "Add", imageSrc: "/add.png" }}
                 extraClasses={cardStyles.small}
                 onClickHandler={() => {
+                  console.log(exerciseRequest);
                   setShowMainMuscleSelector(true);
                 }}
               />
