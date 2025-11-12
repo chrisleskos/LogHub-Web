@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import styles from "./input-field.module.css";
 
 interface InputFieldProps {
@@ -6,6 +6,7 @@ interface InputFieldProps {
   name: string;
   id: string;
   inputRef: React.RefObject<HTMLInputElement | null>;
+  defaultValue?: string;
   handleOnKeyUp?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
@@ -14,6 +15,7 @@ function InputField({
   name,
   id,
   inputRef,
+  defaultValue,
   handleOnKeyUp,
 }: InputFieldProps) {
   const placeHolderSpan = useRef<HTMLSpanElement>(null);
@@ -23,9 +25,14 @@ function InputField({
   };
 
   const handleBlur = () => {
-    if (inputRef.current!.value == "")
+    if (inputRef.current!.value === "" || defaultValue === "")
       placeHolderSpan.current!.classList.remove(styles.small);
+    else placeHolderSpan.current!.classList.add(styles.small);
   };
+
+  useEffect(() => {
+    handleBlur();
+  }, [placeHolderSpan]);
 
   return (
     <>
@@ -40,7 +47,7 @@ function InputField({
           onFocus={handleFocus}
           onBlur={handleBlur}
           onKeyUp={handleOnKeyUp}
-          required
+          defaultValue={defaultValue}
         />
       </div>
     </>

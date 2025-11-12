@@ -11,6 +11,7 @@ form {
 
   height: 100%;
   flex: 1;
+  margin-bottom: 5rem;
 }
 
 .form-slide {
@@ -29,7 +30,21 @@ form {
   cursor: pointer;
 }
 
-.next-btn {
+.nav-btn-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  bottom: 0;
+  width: 100vw;
+  border-top: var(--light-border);
+  padding: 10px 0;
+  box-shadow: 0 -1px 100px 1px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  z-index: 50;
+}
+
+.nav-btn-wrap .next-btn {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -40,7 +55,11 @@ form {
   color: white;
   width: fit-content;
   cursor: pointer;
-  margin: 0 auto;
+  margin: 0 2rem 0 auto;
+}
+
+.nav-btn-wrap button {
+  margin: 0 2rem 0 auto;
 }
 
 .submition-msg {

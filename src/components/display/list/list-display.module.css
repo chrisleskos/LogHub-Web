@@ -182,20 +182,35 @@
 .element-wrap .footer {
   display: flex;
   flex-direction: column;
-  width: 99%;
+  width: calc(var(--element-card-width) - 45px);
   padding: 30px 0 0 0;
   border-radius: 15px;
-  background-color: var(--activated-color);
-  color: white;
+  background-color: var(--input-bg-color);
+  color: black;
   font-size: 0.85rem;
   font-weight: 500;
   transform: translate(0, -35px);
   z-index: 0;
+  overflow: hidden;
 }
 
 .element-wrap .footer > div {
-  margin: 5px 0;
+  padding: 5px 0;
   padding: 10px;
   border-bottom: 0.5px solid rgba(30, 30, 30, 0.1);
-  word-break: break-all;
+  /* word-break: break-all; */
+  line-break: loose;
+}
+
+.element-wrap .footer > .clickable {
+  cursor: pointer;
+}
+
+.element-wrap .footer > .selected {
+  background-color: var(--activated-color);
+  color: white;
+}
+
+.element-wrap .footer > div > span {
+  margin-right: 0.5rem;
 }

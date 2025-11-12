@@ -112,7 +112,7 @@ function NewEquipmentPage({ baseUrl }: EquipmentProps) {
         listElementData={{
           // Edit the string enum format
           title: type
-            .replace("_", " ")
+            .replaceAll("_", " ")
             .split(" ")
             .map(
               (word) =>

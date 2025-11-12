@@ -21,7 +21,7 @@ function AuthInput(inputProps: AuthInputProps) {
         {inputProps.icon}
       </span>
       <input
-        id={inputProps.fieldName.toLowerCase().replace(" ", "-")}
+        id={inputProps.fieldName.toLowerCase().replaceAll(" ", "-")}
         placeholder={
           inputProps.fieldName.charAt(0).toUpperCase() +
           inputProps.fieldName.substring(1).toLowerCase()

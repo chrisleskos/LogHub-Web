@@ -13,6 +13,7 @@ import TextAreaField from "../../components/input/TextAreaField";
 import ListElementCard from "../../components/display/list/ListElementCard";
 import EquipmentList from "../../components/display/list/specifics/EquipmentList";
 import type { MuscleTarget } from "../../interface/Muscle";
+import Window from "../../components/window/Window";
 
 interface NewExerciseInstancePage {
   baseUrl: string;
@@ -28,10 +29,10 @@ function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
   const [exerciseFocusList, setExerciseFocusList] = useState([]);
   const [goalUnitsList, setGoalUnitsList] = useState([]);
   const [muscleTargetsList, setMuscleTargetsList] = useState([]);
-  const [selectedMainMuscleTargets, setSelectedMainMuscleTargets] = useState<
+  const [selectedMainMuscleGroups, setSelectedMainMuscleGroups] = useState<
     string[]
   >([]);
-  const [selectedSecondaryMuscleTargets, setSelectedSecondaryMuscleTargets] =
+  const [selectedSecondaryMuscleGroups, setSelectedSecondaryMuscleGroups] =
     useState<string[]>([]);
   const [showMainMuscleSelector, setShowMainMuscleSelector] = useState(false);
   const [showSecondaryMuscleSelector, setShowSecondaryMuscleSelector] =
@@ -96,10 +97,32 @@ function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
     }));
   };
 
+  const addMainMuscleTarget = (target: string) => {
+    setExerciseRequest((prev) => ({
+      ...prev,
+      mainMuscleTarget: prev.mainMuscleTarget.includes(target)
+        ? prev.mainMuscleTarget.filter((t) => t !== target)
+        : [...prev.mainMuscleTarget, target],
+      secondaryMuscleTarget: prev.secondaryMuscleTarget.filter(
+        (t) => t !== target
+      ),
+    }));
+  };
+
+  const addSecondaryMuscleTarget = (target: string) => {
+    setExerciseRequest((prev) => ({
+      ...prev,
+      mainMuscleTarget: prev.mainMuscleTarget.filter((t) => t !== target),
+      secondaryMuscleTarget: prev.secondaryMuscleTarget.includes(target)
+        ? prev.secondaryMuscleTarget.filter((t) => t !== target)
+        : [...prev.secondaryMuscleTarget, target],
+    }));
+  };
+
   const addNewGroupTargets = () => {};
 
   const toggleMainMuscleGroup = (muscle: string) => {
-    let a = setSelectedMainMuscleTargets((prev) => {
+    let a = setSelectedMainMuscleGroups((prev) => {
       if (prev.includes(muscle)) {
         // remove
         return prev.filter((m) => m !== muscle);
@@ -111,8 +134,8 @@ function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
     console.log(a);
   };
 
-  const toggleSecondaryMuscleGroup = (muscle: string) => {
-    setSelectedSecondaryMuscleTargets((prev) => {
+  const toggleSelectedSecondaryMuscleGroup = (muscle: string) => {
+    setSelectedSecondaryMuscleGroups((prev) => {
       if (prev.includes(muscle)) {
         // remove
         return prev.filter((m) => m !== muscle);
@@ -203,7 +226,7 @@ function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
         listElementData={{
           // Edit the string enum format
           title: focus
-            .replace("_", " ")
+            .replaceAll("_", " ")
             .split(" ")
             .map(
               (word) =>
@@ -228,7 +251,7 @@ function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
         listElementData={{
           // Edit the string enum format
           title: goal
-            .replace("_", " ")
+            .replaceAll("_", " ")
             .split(" ")
             .map(
               (word) =>
@@ -247,13 +270,14 @@ function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
     ));
   }, [goalUnitsList, exerciseRequest]);
 
-  const prepareMainMuscleTargetsDOMElements = useMemo(() => {
+  // The groups displayed in the selection window
+  const prepareMainMuscleGroupsDOMElements = useMemo(() => {
     return muscleGroupList.map((muscle: string) => (
       <ListElementCard
         listElementData={{
           // Edit the string enum format
           title: muscle
-            .replace("_", " ")
+            .replaceAll("_", " ")
             .split(" ")
             .map(
               (word) =>
@@ -263,22 +287,23 @@ function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
           imageSrc: "/" + muscle.toLowerCase() + "-icon.png",
         }}
         extraClasses={`${cardStyles.small} `}
-        isSelected={selectedMainMuscleTargets.includes(muscle)}
+        isSelected={selectedMainMuscleGroups.includes(muscle)}
         onClickHandler={() => {
           toggleMainMuscleGroup(muscle);
         }}
         key={muscle + "1"}
       />
     ));
-  }, [muscleTargetsList, selectedMainMuscleTargets]);
+  }, [muscleTargetsList, selectedMainMuscleGroups]);
 
-  const prepareSecondaryMuscleTargetsDOMElements = useMemo(() => {
+  // The groups displayed in the selection window
+  const prepareSecondaryMuscleGroupsDOMElements = useMemo(() => {
     return muscleGroupList.map((muscle: string) => (
       <ListElementCard
         listElementData={{
           // Edit the string enum format
           title: muscle
-            .replace("_", " ")
+            .replaceAll("_", " ")
             .split(" ")
             .map(
               (word) =>
@@ -288,22 +313,22 @@ function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
           imageSrc: "/" + muscle.toLowerCase() + "-icon.png",
         }}
         extraClasses={`${cardStyles.small} `}
-        isSelected={selectedSecondaryMuscleTargets.includes(muscle)}
+        isSelected={selectedSecondaryMuscleGroups.includes(muscle)}
         onClickHandler={() => {
-          toggleSecondaryMuscleGroup(muscle);
+          toggleSelectedSecondaryMuscleGroup(muscle);
         }}
         key={muscle + "2"}
       />
     ));
-  }, [muscleTargetsList, selectedSecondaryMuscleTargets]);
+  }, [muscleTargetsList, selectedSecondaryMuscleGroups]);
 
-  const prepareSelectedMainMuscleTargetsDOMElements = useMemo(() => {
-    return selectedMainMuscleTargets.map((muscle: string) => (
+  const prepareSelectedMainMuscleGroupsDOMElements = useMemo(() => {
+    return selectedMainMuscleGroups.map((muscle: string) => (
       <ListElementCard
         listElementData={{
           // Edit the string enum format
           title: muscle
-            .replace("_", " ")
+            .replaceAll("_", " ")
             .split(" ")
             .map(
               (word) =>
@@ -318,19 +343,45 @@ function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
         {muscleTargetsList
           .filter((t: MuscleTarget) => t.group === muscle)
           .map((t: MuscleTarget) => (
-            <div>{t.name}</div>
+            <div
+              className={`${cardStyles.clickable}
+                ${
+                  exerciseRequest.mainMuscleTarget.includes(t.name)
+                    ? cardStyles.selected
+                    : ""
+                }
+              `}
+              onClick={() => addMainMuscleTarget(t.name)}
+            >
+              {exerciseRequest.mainMuscleTarget.includes(t.name) && (
+                <span>&#10003;</span>
+              )}
+              {t.name
+                .replaceAll("_", " ")
+                .split(" ")
+                .map(
+                  (word) =>
+                    word.charAt(0).toUpperCase() +
+                    word.substring(1).toLowerCase()
+                )
+                .join(" ")}
+            </div>
           ))}
       </ListElementCard>
     ));
-  }, [selectedMainMuscleTargets]);
+  }, [
+    selectedMainMuscleGroups,
+    selectedSecondaryMuscleGroups,
+    exerciseRequest,
+  ]);
 
-  const prepareSelectedSecondaryMuscleTargetsDOMElements = useMemo(() => {
-    return selectedSecondaryMuscleTargets.map((muscle: string) => (
+  const prepareSelectedSecondaryMuscleGroupsDOMElements = useMemo(() => {
+    return selectedSecondaryMuscleGroups.map((muscle: string) => (
       <ListElementCard
         listElementData={{
           // Edit the string enum format
           title: muscle
-            .replace("_", " ")
+            .replaceAll("_", " ")
             .split(" ")
             .map(
               (word) =>
@@ -345,11 +396,37 @@ function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
         {muscleTargetsList
           .filter((t: MuscleTarget) => t.group === muscle)
           .map((t: MuscleTarget) => (
-            <div>{t.name}</div>
+            <div
+              className={`${cardStyles.clickable}
+                ${
+                  exerciseRequest.secondaryMuscleTarget.includes(t.name)
+                    ? cardStyles.selected
+                    : ""
+                }
+              `}
+              onClick={() => addSecondaryMuscleTarget(t.name)}
+            >
+              {exerciseRequest.secondaryMuscleTarget.includes(t.name) && (
+                <span>&#10003;</span>
+              )}
+              {t.name
+                .replaceAll("_", " ")
+                .split(" ")
+                .map(
+                  (word) =>
+                    word.charAt(0).toUpperCase() +
+                    word.substring(1).toLowerCase()
+                )
+                .join(" ")}
+            </div>
           ))}
       </ListElementCard>
     ));
-  }, [selectedSecondaryMuscleTargets]);
+  }, [
+    selectedMainMuscleGroups,
+    selectedSecondaryMuscleGroups,
+    exerciseRequest,
+  ]);
 
   return (
     <>
@@ -368,32 +445,27 @@ function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
           <div className={styles["focus-categories-container"]}>
             {prepareFocusCategoriesDOMElements}
           </div>
-          {exerciseRequest.possibleFocus.length > 0 && (
-            <div
-              className={creationFormStyles["next-btn"]}
-              onClick={() => {
-                nextStep();
-              }}
-            >
-              Next
-            </div>
-          )}
+          <div className={creationFormStyles["nav-btn-wrap"]}>
+            {exerciseRequest.possibleFocus.length > 0 && (
+              <div
+                className={creationFormStyles["next-btn"]}
+                onClick={() => {
+                  nextStep();
+                }}
+              >
+                Next
+              </div>
+            )}
+          </div>
         </div>
         <div className={creationFormStyles["form-slide"]} id="slide2">
-          <div
-            onClick={() => {
-              prevStep();
-            }}
-            className={creationFormStyles.step}
-          >
-            &#60; Back
-          </div>
           <div className={styles["input-fields"]}>
             <InputField
               placeHolder="Name"
               name="equiupment-name"
               id="exercise-name"
               inputRef={nameInputRef}
+              defaultValue={exerciseRequest.name}
               handleOnKeyUp={handleNameInputOnKeyUp}
             />
             <TextAreaField
@@ -401,15 +473,29 @@ function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
               name="exercise-description"
               id="exercise-description"
               inputRef={descriptionInputRef}
+              defaultValue={exerciseRequest.description}
               handleOnKeyUp={handleDescInputOnKeyUp}
             />
-            <div
-              className={creationFormStyles["next-btn"]}
-              onClick={() => {
-                nextStep();
-              }}
-            >
-              Next
+
+            <div className={creationFormStyles["nav-btn-wrap"]}>
+              <div
+                onClick={() => {
+                  prevStep();
+                }}
+                className={creationFormStyles.step}
+              >
+                &#60; Back
+              </div>
+              {exerciseRequest.name.trim().length > 0 && (
+                <div
+                  className={creationFormStyles["next-btn"]}
+                  onClick={() => {
+                    nextStep();
+                  }}
+                >
+                  Next
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -417,24 +503,28 @@ function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
           <div className={styles["form-slide-header"]}>
             What units could the performance be measured on?
           </div>
-          <div
-            onClick={() => {
-              prevStep();
-            }}
-            className={creationFormStyles.step}
-          >
-            &#60; Back
-          </div>
           <div className={styles["focus-categories-container"]}>
             {prepareGoalUnitsDOMElements}
           </div>
-          <div
-            className={creationFormStyles["next-btn"]}
-            onClick={() => {
-              nextStep();
-            }}
-          >
-            Next
+          <div className={creationFormStyles["nav-btn-wrap"]}>
+            <div
+              onClick={() => {
+                prevStep();
+              }}
+              className={creationFormStyles.step}
+            >
+              &#60; Back
+            </div>
+            {exerciseRequest.possibleGoalUnits.length > 0 && (
+              <div
+                className={creationFormStyles["next-btn"]}
+                onClick={() => {
+                  nextStep();
+                }}
+              >
+                Next
+              </div>
+            )}
           </div>
         </div>
         <div className={creationFormStyles["form-slide"]} id="slide4">
@@ -442,16 +532,8 @@ function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
             Select main and secondary muscle targets of the exercise (if any
             specific). They will later help in categorization and statistics.
           </div>
-          <div
-            onClick={() => {
-              prevStep();
-            }}
-            className={creationFormStyles.step}
-          >
-            &#60; Back
-          </div>
-          <div className={styles["focus-categories-containr"]}>
-            <div className={styles.header}>Main muscle</div>
+          <div>
+            <div className={styles["muscle-header"]}>Main muscle</div>
             <div className={styles["selected-muscles"]}>
               <ListElementCard
                 listElementData={{ title: "Add", imageSrc: "/add.png" }}
@@ -460,26 +542,14 @@ function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
                   setShowMainMuscleSelector(true);
                 }}
               />
-              {prepareSelectedMainMuscleTargetsDOMElements}
+              {prepareSelectedMainMuscleGroupsDOMElements}
             </div>
-            {showMainMuscleSelector && (
-              <div className={styles["selector-window"]}>
-                <div className={styles.main}>
-                  <div
-                    className={styles.header}
-                    onClick={() => {
-                      setShowMainMuscleSelector(false);
-                    }}
-                  >
-                    &times;
-                  </div>
-                  <div className={styles.body}>
-                    {prepareMainMuscleTargetsDOMElements}
-                  </div>
-                </div>
-              </div>
-            )}
-            <div className={styles.header}>Secondary muscle</div>
+            <Window
+              children={prepareMainMuscleGroupsDOMElements}
+              showWindow={showMainMuscleSelector}
+              setShowWindow={setShowMainMuscleSelector}
+            />
+            <div className={styles["muscle-header"]}>Secondary muscle</div>
             <div className={styles["selected-muscles"]}>
               <ListElementCard
                 listElementData={{ title: "Add", imageSrc: "/add.png" }}
@@ -488,46 +558,37 @@ function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
                   setShowSecondaryMuscleSelector(true);
                 }}
               />
-              {prepareSelectedSecondaryMuscleTargetsDOMElements}
+              {prepareSelectedSecondaryMuscleGroupsDOMElements}
             </div>
-            {showSecondaryMuscleSelector && (
-              <div className={styles["selector-window"]}>
-                <div className={styles.main}>
-                  <div
-                    className={styles.header}
-                    onClick={() => {
-                      setShowSecondaryMuscleSelector(false);
-                    }}
-                  >
-                    &times;
-                  </div>
-                  <div className={styles.body}>
-                    {prepareSecondaryMuscleTargetsDOMElements}
-                  </div>
-                </div>
-              </div>
-            )}
+            <Window
+              children={prepareSecondaryMuscleGroupsDOMElements}
+              showWindow={showSecondaryMuscleSelector}
+              setShowWindow={setShowSecondaryMuscleSelector}
+            />
           </div>
-          <div
-            className={creationFormStyles["next-btn"]}
-            onClick={() => {
-              nextStep();
-            }}
-          >
-            Next
+          <div className={creationFormStyles["nav-btn-wrap"]}>
+            <div
+              onClick={() => {
+                prevStep();
+              }}
+              className={creationFormStyles.step}
+            >
+              &#60; Back
+            </div>
+
+            <div
+              className={creationFormStyles["next-btn"]}
+              onClick={() => {
+                nextStep();
+              }}
+            >
+              Next
+            </div>
           </div>
         </div>
         <div className={creationFormStyles["form-slide"]} id="slide5">
           <div className={styles["form-slide-header"]}>
             What equipment can be used for this exercise?
-          </div>
-          <div
-            onClick={() => {
-              prevStep();
-            }}
-            className={creationFormStyles.step}
-          >
-            &#60; Back
           </div>
           <EquipmentList
             baseUrl={baseUrl}
@@ -537,7 +598,18 @@ function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
             }}
             idList={exerciseRequest.possibleEquipment}
           />
-          <button>Submit</button>
+          <div className={creationFormStyles["nav-btn-wrap"]}>
+            <div
+              onClick={() => {
+                prevStep();
+              }}
+              className={creationFormStyles.step}
+            >
+              &#60; Back
+            </div>
+
+            <button>Submit</button>
+          </div>
         </div>
       </CreationForm>
     </>

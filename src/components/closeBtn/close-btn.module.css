@@ -1,0 +1,24 @@
+.close-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  border-radius: 50%;
+  background-color: rgb(255, 87, 87);
+  outline: var(--light-border);
+  width: 1.7rem;
+  height: 1.7rem;
+  justify-self: flex-end;
+  align-self: flex-end;
+  font-size: 2rem;
+  cursor: pointer;
+  text-align: center;
+}
+
+.close-btn > span {
+  transform: translate(0.18px, -3.6px);
+}
+
+.close-btn:hover {
+  box-shadow: 0px 0px 10px 1px #00000022;
+}

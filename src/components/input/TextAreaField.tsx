@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import styles from "./input-field.module.css";
 
 interface TextAreaFieldProps {
@@ -6,6 +6,7 @@ interface TextAreaFieldProps {
   name: string;
   id: string;
   inputRef: React.RefObject<HTMLTextAreaElement | null>;
+  defaultValue?: string;
   handleOnKeyUp?: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
 }
 
@@ -14,6 +15,7 @@ function TextAreaField({
   name,
   id,
   inputRef,
+  defaultValue,
   handleOnKeyUp,
 }: TextAreaFieldProps) {
   const placeHolderSpan = useRef<HTMLSpanElement>(null);
@@ -23,9 +25,14 @@ function TextAreaField({
   };
 
   const handleBlur = () => {
-    if (inputRef.current!.value == "")
+    if (inputRef.current!.value === "" || defaultValue === "")
       placeHolderSpan.current!.classList.remove(styles.small);
+    else placeHolderSpan.current!.classList.add(styles.small);
   };
+
+  useEffect(() => {
+    handleBlur();
+  }, [placeHolderSpan]);
 
   return (
     <>
@@ -37,6 +44,7 @@ function TextAreaField({
           ref={inputRef}
           name={name}
           id={id}
+          defaultValue={defaultValue}
           onFocus={handleFocus}
           onBlur={handleBlur}
           onKeyUp={handleOnKeyUp}
