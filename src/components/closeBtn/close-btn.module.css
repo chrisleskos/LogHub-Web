@@ -13,6 +13,7 @@
   font-size: 2rem;
   cursor: pointer;
   text-align: center;
+  margin: 5px 8px;
 }
 
 .close-btn > span {

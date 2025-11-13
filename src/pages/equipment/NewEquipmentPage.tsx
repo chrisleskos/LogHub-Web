@@ -112,8 +112,8 @@ function NewEquipmentPage({ baseUrl }: EquipmentProps) {
         listElementData={{
           // Edit the string enum format
           title: type
-            .replaceAll("_", " ")
-            .split(" ")
+
+            .split("_")
             .map(
               (word) =>
                 word.charAt(0).toUpperCase() + word.substring(1).toLowerCase()

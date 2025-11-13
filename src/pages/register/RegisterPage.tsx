@@ -78,7 +78,7 @@ function RegisterPage({ baseUrl, path }: RegisterPageProps) {
     const usernameVal = username.ref.current!.value;
     const passwordVal = password.ref.current!.value;
     const emailVal = email.ref.current!.value;
-    const fullnameParts = fullname.ref.current!.value.split(" ");
+    const fullnameParts = fullname.ref.current!.value.split("_");
     const lastname = fullnameParts.pop() || "";
     const firstname = fullnameParts.join(" ");
 

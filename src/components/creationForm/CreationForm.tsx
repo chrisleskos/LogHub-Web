@@ -4,7 +4,6 @@ import React, {
   useMemo,
   useRef,
   useState,
-  type ReactElement,
 } from "react";
 import ProgressBar, { type ProgressBarRef } from "../progressBar/ProgressBar";
 import styles from "./creation-form.module.css";
@@ -51,21 +50,8 @@ const CreationForm = forwardRef<CreationFormRef, CreationFormProps>(
       </div>,
     ];
 
-    // Type guard
-    function isSlide(
-      node: React.ReactNode
-    ): node is ReactElement<{ className?: string }> {
-      return (
-        typeof node === "object" &&
-        node !== null &&
-        "props" in node &&
-        typeof (node as any).props.className === "string" &&
-        (node as any).props.className.includes(styles["form-slide"])
-      );
-    }
-
     const allSlides = useMemo(() => {
-      const parentSlides = React.Children.toArray(children).filter(isSlide);
+      const parentSlides = React.Children.toArray(children);
       return [...parentSlides, ...defaultSlides];
     }, [children]);
 

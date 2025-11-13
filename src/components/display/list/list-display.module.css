@@ -195,11 +195,28 @@
 }
 
 .element-wrap .footer > div {
-  padding: 5px 0;
-  padding: 10px;
+  padding: 9px 10px;
   border-bottom: 0.5px solid rgba(30, 30, 30, 0.1);
   /* word-break: break-all; */
   line-break: loose;
+}
+.element-wrap .footer .hidden {
+  text-align: center;
+  font-size: 0.7rem;
+  padding: 0;
+  cursor: pointer;
+}
+
+.element-wrap .footer .arrows-down,
+.element-wrap .footer .arrows-up {
+  display: inline-block;
+  transform: rotateZ(90deg) translate(2px, 0);
+  font-weight: bolder;
+  margin-left: 6px;
+  font-size: 0.75rem;
+}
+.element-wrap .footer .arrows-up {
+  transform: rotateZ(-90deg) translate(-1px, 0);
 }
 
 .element-wrap .footer > .clickable {
@@ -211,6 +228,6 @@
   color: white;
 }
 
-.element-wrap .footer > div > span {
+.element-wrap .footer > div:not(.hidden) > span {
   margin-right: 0.5rem;
 }

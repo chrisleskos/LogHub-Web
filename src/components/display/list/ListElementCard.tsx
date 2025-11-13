@@ -1,9 +1,9 @@
-import type { MouseEventHandler, ReactNode } from "react";
+import { useState, type MouseEventHandler, type ReactNode } from "react";
 import styles from "./list-display.module.css";
 import type { ListElementData } from "./ListElementData";
 
 interface ListElementCardProps {
-  onClickHandler?: MouseEventHandler<HTMLDivElement>;
+  onClickHandler?: () => void;
   extraClasses?: string;
   isSelected?: boolean;
   children?: ReactNode;
@@ -17,13 +17,17 @@ function ListElementCard({
   listElementData,
   children,
 }: ListElementCardProps) {
+  const [showChildren, setShowChildren] = useState<boolean>(true);
   return (
     <div className={`${styles["element-wrap"]}`}>
       <div
         className={`${styles.element} ${isSelected ? styles.selected : ""}  ${
           children ? styles["not-hover"] : ""
         } ${extraClasses} `}
-        onClick={onClickHandler}
+        onClick={() => {
+          if (onClickHandler) onClickHandler();
+          setShowChildren((prev) => !prev);
+        }}
       >
         {listElementData.creator && (
           <div
@@ -82,7 +86,32 @@ function ListElementCard({
           </div>
         )}
       </div>
-      {children && <div className={styles.footer}>{children}</div>}
+      {children && (
+        <div className={styles.footer}>
+          {showChildren ? (
+            <>
+              {children}
+              <div
+                className={`${styles.hidden}`}
+                onClick={() => setShowChildren(false)}
+              >
+                <span>
+                  Hide<span className={styles["arrows-up"]}>»</span>
+                </span>
+              </div>
+            </>
+          ) : (
+            <div
+              className={`${styles.hidden}`}
+              onClick={() => setShowChildren(true)}
+            >
+              <span>
+                Show<span className={styles["arrows-down"]}>»</span>
+              </span>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
