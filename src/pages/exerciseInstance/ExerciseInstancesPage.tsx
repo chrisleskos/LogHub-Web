@@ -1,17 +1,24 @@
 import PageBase from "../../components/base/PageBase";
+import ExerciseInstanceList from "../../components/display/list/specifics/ExerciseInstanceList";
 
-interface GetAllExerciseInstancesProps {
+interface ExerciseInstancesProps {
   baseUrl: string;
 }
 
-function GetAllExerciseInstancesPage({
-  baseUrl,
-}: GetAllExerciseInstancesProps) {
+function ExerciseInstancesPage({ baseUrl }: ExerciseInstancesProps) {
+  const handleElementClick = (id: number) => {
+    window.location.href = "/exercise-instance/" + id;
+  };
   return (
     <>
-      <PageBase header="Exercise Instances" />
+      <PageBase header="Equipment" />
+      <ExerciseInstanceList
+        baseUrl={baseUrl}
+        haveAddBtn={true}
+        handleOnElementClick={handleElementClick}
+      />
     </>
   );
 }
 
-export default GetAllExerciseInstancesPage;
+export default ExerciseInstancesPage;

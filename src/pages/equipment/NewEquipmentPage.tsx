@@ -23,7 +23,6 @@ function NewEquipmentPage({ baseUrl }: EquipmentProps) {
   const equipmentTypesURL = "types";
 
   const [equipmentTypesList, setEquipmentTypesList] = useState([]);
-  const [showAddition, setShowAddition] = useState<boolean>(false); // TODO: use to show the new Equipment
 
   const creationFormRef = useRef<CreationFormRef>(null);
   const nameInputRef = useRef<HTMLInputElement>(null);
@@ -135,7 +134,6 @@ function NewEquipmentPage({ baseUrl }: EquipmentProps) {
       <div className={styles["selected-type"]}>
         #{equipmentRequest.equipmentType.toLowerCase()}
       </div>
-      {showAddition && <div></div>}
       <CreationForm ref={creationFormRef} onSubmitHandler={handleFormSubmit}>
         <div className={creationFormStyles["form-slide"]} id="slide1">
           <div className={styles["form-slide-header"]}>

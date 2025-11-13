@@ -3,11 +3,11 @@ import HomePage from "./pages/home/HomePage";
 import AboutPage from "./pages/about/AboutPage";
 import PageNotFound from "./pages/notFound/PageNotFound";
 import NewExerciseInstancePage from "./pages/exerciseInstance/NewExerciseInstancePage";
-import GetAllExerciseInstancesPage from "./pages/exerciseInstance/ExerciseInstancesPage";
 import EquipmentPage from "./pages/equipment/EquipmentPage";
 import NewEquipmentPage from "./pages/equipment/NewEquipmentPage";
 import ExercisePage from "./pages/exercise/ExercisePage";
 import NewExercisePage from "./pages/exercise/NewExercisePage";
+import ExerciseInstancesPage from "./pages/exerciseInstance/ExerciseInstancesPage";
 
 interface HandleRoutesProps {
   baseUrl: string;
@@ -28,10 +28,8 @@ function HandleRoutes({ baseUrl }: HandleRoutesProps) {
         <Route index element={<ExercisePage baseUrl={baseUrl} />} />
         <Route path="new" element={<NewExercisePage baseUrl={baseUrl} />} />
       </Route>
-      <Route
-        path="exercise-instance"
-        element={<GetAllExerciseInstancesPage baseUrl={baseUrl} />}
-      >
+      <Route path="/exercise-instance">
+        <Route index element={<ExerciseInstancesPage baseUrl={baseUrl} />} />
         <Route
           path="new"
           element={<NewExerciseInstancePage baseUrl={baseUrl} />}

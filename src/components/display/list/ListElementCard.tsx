@@ -1,4 +1,4 @@
-import { useState, type MouseEventHandler, type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import styles from "./list-display.module.css";
 import type { ListElementData } from "./ListElementData";
 

@@ -20,8 +20,6 @@ function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
   const [cookies] = useCookies(["token"]);
   const exerciseURL = "exercise/";
 
-  const [showAddition, setShowAddition] = useState<boolean>(false); // TODO: use to show the new exercise
-
   const creationFormRef = useRef<CreationFormRef>(null);
 
   const nextStep = (steps = 1) => creationFormRef.current?.nextStep(steps);
@@ -63,7 +61,6 @@ function NewExercisePage({ baseUrl }: NewExerciseInstancePage) {
           <span key={"selected-focus-" + focus}> #{focus.toLowerCase()} </span>
         ))}
       </div>
-      {showAddition && <div></div>}
       <CreationForm ref={creationFormRef} onSubmitHandler={handleFormSubmit}>
         <FocusTypeSlide
           baseUrl={baseUrl}
