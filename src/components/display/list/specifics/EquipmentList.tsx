@@ -30,7 +30,7 @@ function EquipmentList({
       },
     })
       .then((response) => {
-        setEquipmentList(response.data);
+        setEquipmentList(response.data.content);
       })
       .catch((error) => {
         console.log(error);

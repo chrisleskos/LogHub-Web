@@ -30,7 +30,7 @@ function ExerciseInstanceList({
       },
     })
       .then((response) => {
-        setExerciseInstanceList(response.data);
+        setExerciseInstanceList(response.data.content);
       })
       .catch((error) => {
         console.log(error);

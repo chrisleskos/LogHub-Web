@@ -23,7 +23,7 @@ function ExercisePage({ baseUrl }: exerciseProps) {
       },
     })
       .then((response) => {
-        setExerciseList(response.data);
+        setExerciseList(response.data.content);
       })
       .catch((error) => {
         console.log(error);
