@@ -1,0 +1,32 @@
+.types-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 10px;
+}
+
+.types-container .type-selection {
+  margin: 0.3rem;
+  cursor: pointer;
+  background-color: var(--activated-color);
+  padding: 10px;
+  border-radius: 12px;
+  color: white;
+  font-weight: 600;
+}
+
+.selected-type {
+  display: inline-block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin: 0 5px;
+  color: var(--activated-color);
+}
+
+.input-fields {
+  display: flex;
+  padding-top: 3rem;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

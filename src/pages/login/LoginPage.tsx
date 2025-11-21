@@ -118,6 +118,68 @@ function LoginPage({ baseUrl, path }: LoginPageProps) {
           <div>Track.</div>
           <div>Improve.</div>
           <div>Repeat.</div>
+          <div>Track.</div>
+          <div>Improve.</div>
+          <div>Repeat.</div>
+          <div>Track.</div>
+          <div>Improve.</div>
+          <div>Repeat.</div>
+          <div>Track.</div>
+          <div>Improve.</div>
+          <div>Repeat.</div>
+          <div>Track.</div>
+          <div>Improve.</div>
+          <div>Repeat.</div>
+          <div>Track.</div>
+          <div>Improve.</div>
+          <div>Repeat.</div>
+          <div>Track.</div>
+          <div>Improve.</div>
+          <div>Repeat.</div>
+          <div>Track.</div>
+          <div>Improve.</div>
+          <div>Repeat.</div>
+          <div>Track.</div>
+          <div>Improve.</div>
+          <div>Repeat.</div>
+          <div>Track.</div>
+          <div>Improve.</div>
+          <div>Repeat.</div>
+
+          <div className={styles.neon}>Track.</div>
+          <div className={styles.neon}>Improve.</div>
+          <div className={styles.neon}>Repeat.</div>
+
+          <div>Track.</div>
+          <div>Improve.</div>
+          <div>Repeat.</div>
+          <div>Track.</div>
+          <div>Improve.</div>
+          <div>Repeat.</div>
+          <div>Track.</div>
+          <div>Improve.</div>
+          <div>Repeat.</div>
+          <div>Track.</div>
+          <div>Improve.</div>
+          <div>Repeat.</div>
+          <div>Track.</div>
+          <div>Improve.</div>
+          <div>Repeat.</div>
+          <div>Track.</div>
+          <div>Improve.</div>
+          <div>Repeat.</div>
+          <div>Track.</div>
+          <div>Improve.</div>
+          <div>Repeat.</div>
+          <div>Track.</div>
+          <div>Improve.</div>
+          <div>Repeat.</div>
+          <div>Track.</div>
+          <div>Improve.</div>
+          <div>Repeat.</div>
+          <div>Track.</div>
+          <div>Improve.</div>
+          <div>Repeat.</div>
         </div>
       </div>
     </>

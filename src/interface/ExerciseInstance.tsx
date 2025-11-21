@@ -3,6 +3,7 @@ import type { GoalRequest, GoalResponse } from "./Goal";
 
 export type ExerciseInstanceRequest = {
   exerciseId: number;
+  name: string;
   comment: string;
   focus: string[];
   rangeOfMotion: string;
@@ -13,6 +14,7 @@ export type ExerciseInstanceRequest = {
 export type ExerciseInstanceResponse = {
   id: number;
   exercise: ExerciseResponse;
+  name: string;
   comment: string;
   focus: string[];
   rangeOfMotion: string;
