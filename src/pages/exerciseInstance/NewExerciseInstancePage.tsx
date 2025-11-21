@@ -61,7 +61,14 @@ function NewExerciseInstancePage({ baseUrl }: NewExerciseInstanceProps) {
         Authorization: "Bearer " + cookies.token,
       },
     }).then((response) => {
-      setSelectedExercise(response.data);
+      const exerciseResponse = response.data;
+      setSelectedExercise(exerciseResponse);
+      if (exerciseInstanceRequest.name === "") {
+        setExerciseInstanceRequest((prev) => ({
+          ...prev,
+          name: exerciseResponse.name + " implementation",
+        }));
+      }
     });
   }, [exerciseInstanceRequest]);
   return (
