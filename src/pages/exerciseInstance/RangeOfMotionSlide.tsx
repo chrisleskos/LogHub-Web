@@ -12,7 +12,6 @@ function RangeOfMotionSlide({
   baseUrl,
   exerciseInstanceRequest,
   setExerciseInstanceRequest,
-  nextStep = () => {},
   prevStep = () => {},
 }: NewExerciseInstanceSlideProps) {
   const [cookies] = useCookies(["token"]);
