@@ -62,6 +62,7 @@ function ExerciseInstanceList({
             // description: exerciseInstance.description,
             favorite: false,
             // hashtag: exerciseInstance.,
+            imageSrc: "/exercise/exercise_instance-icon.png",
           }}
           onClickHandler={() => handleOnElementClick(exerciseInstance.id)}
           key={exerciseInstance.id}

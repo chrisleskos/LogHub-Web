@@ -11,7 +11,7 @@ function ExerciseInstancesPage({ baseUrl }: ExerciseInstancesProps) {
   };
   return (
     <>
-      <PageBase header="Equipment" />
+      <PageBase header="Exercise Instances" />
       <ExerciseInstanceList
         baseUrl={baseUrl}
         haveAddBtn={true}

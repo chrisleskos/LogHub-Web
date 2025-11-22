@@ -60,27 +60,26 @@ function NameCommentSlide({
           defaultValue={exerciseInstanceRequest.comment}
           handleOnKeyUp={handleDescInputOnKeyUp}
         />
-
-        <div className={creationFormStyles["nav-btn-wrap"]}>
-          <div
-            onClick={() => {
-              prevStep();
-            }}
-            className={creationFormStyles.step}
-          >
-            &#60; Back
-          </div>
-          {exerciseInstanceRequest.name.trim().length > 0 && (
-            <div
-              className={creationFormStyles["next-btn"]}
-              onClick={() => {
-                nextStep();
-              }}
-            >
-              Next
-            </div>
-          )}
+      </div>
+      <div className={creationFormStyles["nav-btn-wrap"]}>
+        <div
+          onClick={() => {
+            prevStep();
+          }}
+          className={creationFormStyles.step}
+        >
+          &#60; Back
         </div>
+        {exerciseInstanceRequest.name.trim().length > 0 && (
+          <div
+            className={creationFormStyles["next-btn"]}
+            onClick={() => {
+              nextStep();
+            }}
+          >
+            Next
+          </div>
+        )}
       </div>
     </div>
   );

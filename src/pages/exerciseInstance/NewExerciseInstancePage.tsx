@@ -12,6 +12,7 @@ import NameCommentSlide from "./NameCommentSlide";
 import type { ExerciseResponse } from "../../interface/Exercise";
 import FocusSelectSlide from "./FocusSelectSlide";
 import GoalSlide from "./GoalSlide";
+import RangeOfMotionSlide from "./RangeOfMotionSlide";
 
 interface NewExerciseInstanceProps {
   baseUrl: string;
@@ -118,6 +119,13 @@ function NewExerciseInstancePage({ baseUrl }: NewExerciseInstanceProps) {
               ? []
               : selectedExercise.possibleGoalUnits
           }
+        />
+        <RangeOfMotionSlide
+          baseUrl={baseUrl}
+          exerciseInstanceRequest={exerciseInstanceRequest}
+          setExerciseInstanceRequest={setExerciseInstanceRequest}
+          nextStep={nextStep}
+          prevStep={prevStep}
         />
       </CreationForm>
     </>
