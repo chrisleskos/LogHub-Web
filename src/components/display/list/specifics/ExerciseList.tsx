@@ -61,6 +61,7 @@ function ExerciseList({
             description: exercise.description,
             favorite: false,
             // hashtag: exercise.exerciseType,
+            imageSrc: "/exercise/exercise-icon.png",
           }}
           onClickHandler={() => handleOnElementClick(exercise.id)}
           key={exercise.id}

@@ -7,6 +7,7 @@ interface ListElementCardProps {
   extraClasses?: string;
   isSelected?: boolean;
   children?: ReactNode;
+  initChildrenShown?: boolean;
   listElementData: ListElementData;
 }
 
@@ -15,9 +16,10 @@ function ListElementCard({
   extraClasses,
   isSelected,
   listElementData,
+  initChildrenShown = true,
   children,
 }: ListElementCardProps) {
-  const [showChildren, setShowChildren] = useState<boolean>(true);
+  const [showChildren, setShowChildren] = useState<boolean>(initChildrenShown);
   return (
     <div className={`${styles["element-wrap"]}`}>
       <div

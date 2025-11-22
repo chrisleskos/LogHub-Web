@@ -55,7 +55,7 @@ function FocusTypeSlide({
                 word.charAt(0).toUpperCase() + word.substring(1).toLowerCase()
             )
             .join(" "),
-          imageSrc: "/" + focus.toLowerCase() + "-icon.png",
+          imageSrc: "/focus/" + focus.toLowerCase() + "-icon.png",
         }}
         extraClasses={`${cardStyles.small} `}
         isSelected={exerciseRequest.possibleFocus.includes(focus)}

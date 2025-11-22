@@ -60,6 +60,7 @@ function EquipmentList({
             description: equipment.description,
             favorite: false,
             hashtag: equipment.equipmentType,
+            imageSrc: "/equipment/equipment-icon.png",
           }}
           onClickHandler={() => handleOnElementClick(equipment.id)}
           key={equipment.id}

@@ -41,7 +41,7 @@ function GoalUnitsSlide({
                 word.charAt(0).toUpperCase() + word.substring(1).toLowerCase()
             )
             .join(" "),
-          imageSrc: "/" + goal.toLowerCase() + "-icon.png",
+          imageSrc: "/goal/" + goal.toLowerCase() + "-icon.png",
         }}
         extraClasses={`${cardStyles.small} `}
         isSelected={exerciseRequest.possibleGoalUnits.includes(goal)}

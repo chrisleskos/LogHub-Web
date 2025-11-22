@@ -39,7 +39,7 @@ function NameCommentSlide({
     setExerciseInstanceDescription(e.currentTarget.value);
   };
   return (
-    <div className={creationFormStyles["form-slide"]} id="slide2">
+    <div className={creationFormStyles["form-slide"]} id="slide3">
       <AlertMessage>
         Exercise Instance's <strong>Name</strong> & <strong>Description</strong>
       </AlertMessage>

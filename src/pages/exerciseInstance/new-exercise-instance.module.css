@@ -30,3 +30,20 @@
   justify-content: center;
   align-items: center;
 }
+
+.focus-categories-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 10px;
+}
+
+.focus-categories-container .type-selection {
+  margin: 0.3rem;
+  cursor: pointer;
+  background-color: var(--activated-color);
+  padding: 10px;
+  border-radius: 12px;
+  color: white;
+  font-weight: 600;
+}

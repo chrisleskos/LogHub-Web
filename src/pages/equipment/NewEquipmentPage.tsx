@@ -12,6 +12,7 @@ import type { EquipmentRequest } from "../../interface/Equipment";
 import CreationForm, {
   type CreationFormRef,
 } from "../../components/creationForm/CreationForm";
+import AlertMessage from "../../components/alert/AlertMessage";
 
 interface EquipmentProps {
   baseUrl: string;
@@ -118,6 +119,7 @@ function NewEquipmentPage({ baseUrl }: EquipmentProps) {
                 word.charAt(0).toUpperCase() + word.substring(1).toLowerCase()
             )
             .join(" "),
+          imageSrc: "/equipment/" + type.toLowerCase() + "-icon.png",
         }}
         extraClasses={`${cardStyles["small"]}`}
         onClickHandler={() => {
@@ -136,20 +138,15 @@ function NewEquipmentPage({ baseUrl }: EquipmentProps) {
       </div>
       <CreationForm ref={creationFormRef} onSubmitHandler={handleFormSubmit}>
         <div className={creationFormStyles["form-slide"]} id="slide1">
-          <div className={styles["form-slide-header"]}>
-            Select type of equipment
-          </div>
+          <AlertMessage>
+            Select equipment <strong>type</strong>
+          </AlertMessage>
           <div className={styles["types-container"]}>{prepareDOMElements}</div>
         </div>
         <div className={creationFormStyles["form-slide"]} id="slide2">
-          <div
-            onClick={() => {
-              prevStep();
-            }}
-            className={creationFormStyles.step}
-          >
-            &#60; Back
-          </div>
+          <AlertMessage>
+            Equipment's <strong>Name</strong> & <strong>Description</strong>.
+          </AlertMessage>
           <div className={styles["input-fields"]}>
             <InputField
               placeHolder="Name"
@@ -165,6 +162,17 @@ function NewEquipmentPage({ baseUrl }: EquipmentProps) {
               inputRef={descriptionInputRef}
               handleOnKeyUp={handleDescInputOnKeyUp}
             />
+          </div>
+          <div className={creationFormStyles["nav-btn-wrap"]}>
+            <div
+              onClick={() => {
+                prevStep();
+              }}
+              className={creationFormStyles.step}
+            >
+              &#60; Back
+            </div>
+
             <button>Submit</button>
           </div>
         </div>

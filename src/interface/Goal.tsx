@@ -1,6 +1,8 @@
 export type GoalRequest = {
   goalUnit: string;
-  value: number;
+  min: number;
+  max: number;
+  value?: number;
   reserve: number;
   measurmentUnits: string;
 };
@@ -8,6 +10,8 @@ export type GoalRequest = {
 export type GoalResponse = {
   id: number;
   goalUnit: string;
+  min: number;
+  max: number;
   value: number;
   reserve: number;
   measurmentUnits: string;

@@ -1,7 +1,7 @@
 import type { ExerciseInstanceRequest } from "../../interface/ExerciseInstance";
 
 export type NewExerciseInstanceSlideProps = {
-  baseUrl: string;
+  baseUrl?: string;
   exerciseInstanceRequest: ExerciseInstanceRequest;
   setExerciseInstanceRequest: React.Dispatch<
     React.SetStateAction<ExerciseInstanceRequest>

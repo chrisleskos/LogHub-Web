@@ -4,7 +4,7 @@ import AlertMessage from "../../components/alert/AlertMessage";
 import type { NewExerciseInstanceSlideProps } from "./NewExerciseInstanceSlideProps";
 
 function ExerciseSelectSlide({
-  baseUrl,
+  baseUrl = "",
   setExerciseInstanceRequest,
   nextStep = () => {},
 }: NewExerciseInstanceSlideProps) {
@@ -16,7 +16,7 @@ function ExerciseSelectSlide({
     nextStep();
   };
   return (
-    <div className={creationFormStyles["form-slide"]} id="slide5">
+    <div className={creationFormStyles["form-slide"]} id="slide1">
       <AlertMessage>
         Select <strong>exercise</strong>
       </AlertMessage>

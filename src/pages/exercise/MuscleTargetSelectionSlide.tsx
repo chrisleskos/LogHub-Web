@@ -162,7 +162,7 @@ function MuscleTargetSelectionSlide({
                 word.charAt(0).toUpperCase() + word.substring(1).toLowerCase()
             )
             .join(" "),
-          imageSrc: "/" + muscle.toLowerCase() + "-icon.png",
+          imageSrc: "/muscle/" + muscle.toLowerCase() + "-icon.png",
         }}
         extraClasses={`${cardStyles.small} `}
         isSelected={selectedMainMuscleGroups.includes(muscle)}
@@ -187,7 +187,7 @@ function MuscleTargetSelectionSlide({
                 word.charAt(0).toUpperCase() + word.substring(1).toLowerCase()
             )
             .join(" "),
-          imageSrc: "/" + muscle.toLowerCase() + "-icon.png",
+          imageSrc: "/muscle/" + muscle.toLowerCase() + "-icon.png",
         }}
         extraClasses={`${cardStyles.small} `}
         isSelected={selectedSecondaryMuscleGroups.includes(muscle)}
@@ -211,7 +211,7 @@ function MuscleTargetSelectionSlide({
                 word.charAt(0).toUpperCase() + word.substring(1).toLowerCase()
             )
             .join(" "),
-          imageSrc: "/" + muscle.toLowerCase() + "-icon.png",
+          imageSrc: "/muscle/" + muscle.toLowerCase() + "-icon.png",
         }}
         extraClasses={`${cardStyles.small} `}
         key={muscle + "11"}
@@ -263,7 +263,7 @@ function MuscleTargetSelectionSlide({
                 word.charAt(0).toUpperCase() + word.substring(1).toLowerCase()
             )
             .join(" "),
-          imageSrc: "/" + muscle.toLowerCase() + "-icon.png",
+          imageSrc: "/muscle/" + muscle.toLowerCase() + "-icon.png",
         }}
         extraClasses={`${cardStyles.small} `}
         key={muscle + "11"}

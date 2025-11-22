@@ -10,6 +10,8 @@ import { useCookies } from "react-cookie";
 import ExerciseSelectSlide from "./ExerciseSelectSlide";
 import NameCommentSlide from "./NameCommentSlide";
 import type { ExerciseResponse } from "../../interface/Exercise";
+import FocusSelectSlide from "./FocusSelectSlide";
+import GoalSlide from "./GoalSlide";
 
 interface NewExerciseInstanceProps {
   baseUrl: string;
@@ -90,12 +92,32 @@ function NewExerciseInstancePage({ baseUrl }: NewExerciseInstanceProps) {
           nextStep={nextStep}
           prevStep={prevStep}
         />
+        <FocusSelectSlide
+          exerciseInstanceRequest={exerciseInstanceRequest}
+          setExerciseInstanceRequest={setExerciseInstanceRequest}
+          nextStep={nextStep}
+          prevStep={prevStep}
+          possibleFocus={
+            selectedExercise === undefined ? [] : selectedExercise.possibleFocus
+          }
+        />
         <NameCommentSlide
           baseUrl={baseUrl}
           exerciseInstanceRequest={exerciseInstanceRequest}
           setExerciseInstanceRequest={setExerciseInstanceRequest}
           nextStep={nextStep}
           prevStep={prevStep}
+        />
+        <GoalSlide
+          exerciseInstanceRequest={exerciseInstanceRequest}
+          setExerciseInstanceRequest={setExerciseInstanceRequest}
+          nextStep={nextStep}
+          prevStep={prevStep}
+          possibleGoalUnits={
+            selectedExercise === undefined
+              ? []
+              : selectedExercise.possibleGoalUnits
+          }
         />
       </CreationForm>
     </>
