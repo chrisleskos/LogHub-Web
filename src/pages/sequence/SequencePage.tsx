@@ -1,4 +1,5 @@
 import PageBase from "../../components/base/PageBase";
+import SequenceList from "../../components/display/list/specifics/SequenceList";
 
 interface SequencePageProps {
   baseUrl: string;
@@ -11,6 +12,11 @@ function SequencesPage({ baseUrl }: SequencePageProps) {
   return (
     <>
       <PageBase header="Sequences" />
+      <SequenceList
+        baseUrl={baseUrl}
+        handleOnElementClick={handleElementClick}
+        haveAddBtn
+      />
     </>
   );
 }
