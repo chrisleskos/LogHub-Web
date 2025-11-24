@@ -1,0 +1,16 @@
+.round-wrapper {
+  width: 99vw;
+  margin: 1rem auto;
+  /* border-bottom: var(--light-border); */
+}
+
+.round-container {
+  display: flex;
+  align-items: center;
+  overflow-x: auto;
+  padding: 1rem 0.4rem;
+}
+
+.add-round-wrapper {
+  border-top: var(--light-border);
+}

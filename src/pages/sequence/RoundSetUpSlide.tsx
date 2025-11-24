@@ -11,6 +11,8 @@ import type { ExerciseInstanceResponse } from "../../interface/ExerciseInstance"
 import type { RoundRequest } from "../../interface/Round";
 import Window from "../../components/window/Window";
 import ExerciseInstanceList from "../../components/display/list/specifics/ExerciseInstanceList";
+import InputHeader from "../../components/input/InputHeader";
+import CloseButton from "../../components/closeBtn/CloseButton";
 
 function RoundSetUpSlide({
   baseUrl = "",
@@ -35,8 +37,25 @@ function RoundSetUpSlide({
 
   const [showWindowModal, setShowWindowModal] = useState<boolean>(false);
 
+  const handleOnKeyUp = (
+    e: React.KeyboardEvent<HTMLInputElement>,
+    index: number
+  ) => {
+    setRoundList((prev) => {
+      prev[index] = { ...prev[index], name: e.currentTarget?.value };
+      return prev;
+    });
+  };
+
+  const removeRound = (round: RoundRequest) => {
+    setRoundList((prev) => prev.filter((r) => r.name !== round.name));
+  };
+
   const setRoundExercise = (id: number) => {
-    operatingRound.exerciseInstanceIds.push(id);
+    operatingRound.exerciseInstanceIds =
+      operatingRound.exerciseInstanceIds.includes(id)
+        ? operatingRound.exerciseInstanceIds.filter((exid) => exid !== id)
+        : [...operatingRound.exerciseInstanceIds, id];
     setRoundList((prev) => [
       ...prev.map((round) =>
         round.name === operatingRound.name
@@ -80,9 +99,22 @@ function RoundSetUpSlide({
   const prepareRoundsDOMElements = useMemo(() => {
     console.log(sequenceRequest);
     return roundList.map((r: RoundRequest, i: number) => (
-      <div key={r.name + i}>
-        <input defaultValue={r.name} />
-        <div>
+      <div key={r.name + i} className={styles["round-wrapper"]}>
+        <CloseButton
+          onClickHandler={() => {
+            removeRound(r);
+          }}
+        />
+        <InputHeader
+          id={"round-header" + i}
+          name={"round-header" + i}
+          placeHolder={"Round " + (i + 1) + " name"}
+          defaultValue={r.name.trim() !== "" ? r.name : "Round " + (i + 1)}
+          handleOnKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) =>
+            handleOnKeyUp(e, i)
+          }
+        />
+        <div className={styles["round-container"]}>
           {exerciseInstanceList
             .filter((exInst: ExerciseInstanceResponse) =>
               r.exerciseInstanceIds.some((id) => id === exInst.id)
@@ -100,15 +132,15 @@ function RoundSetUpSlide({
                 key={existingExInst.id}
               />
             ))}
+          <ListElementCard
+            listElementData={{ title: "Add exercise", imageSrc: "/add.png" }}
+            extraClasses={cardStyles.small}
+            onClickHandler={() => {
+              setOperatingRound(r);
+              setShowWindowModal(true);
+            }}
+          />
         </div>
-        <ListElementCard
-          listElementData={{ title: "Add exercise", imageSrc: "/add.png" }}
-          extraClasses={cardStyles.small}
-          onClickHandler={() => {
-            setOperatingRound(r);
-            setShowWindowModal(true);
-          }}
-        />
       </div>
     ));
   }, [roundList, exerciseInstanceList]);
@@ -127,16 +159,18 @@ function RoundSetUpSlide({
       </Window>
       <div>
         {prepareRoundsDOMElements}
-        <ListElementCard
-          listElementData={{ title: "Add round", imageSrc: "/add.png" }}
-          extraClasses={cardStyles.small}
-          onClickHandler={() => {
-            setRoundList((prev) => [
-              ...prev,
-              { exerciseInstanceIds: [], name: "Round " + (prev.length + 1) },
-            ]);
-          }}
-        />
+        <div className={styles["add-round-wrapper"]}>
+          <ListElementCard
+            listElementData={{ title: "Add round", imageSrc: "/add.png" }}
+            extraClasses={cardStyles.small}
+            onClickHandler={() => {
+              setRoundList((prev) => [
+                ...prev,
+                { exerciseInstanceIds: [], name: "Round " + (prev.length + 1) },
+              ]);
+            }}
+          />
+        </div>
       </div>
       <div className={creationFormStyles["nav-btn-wrap"]}>
         <div

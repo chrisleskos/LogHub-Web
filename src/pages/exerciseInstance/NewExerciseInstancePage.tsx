@@ -49,11 +49,12 @@ function NewExerciseInstancePage({ baseUrl }: NewExerciseInstanceProps) {
         Authorization: "Bearer " + cookies.token,
       },
     })
-      .then(() => {
+      .then((response) => {
+        if (response.status > 400) nextStep(100);
         nextStep();
       })
       .catch(() => {
-        nextStep(2);
+        nextStep(100);
       });
   };
 

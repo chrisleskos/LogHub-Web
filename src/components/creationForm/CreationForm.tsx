@@ -57,7 +57,7 @@ const CreationForm = forwardRef<CreationFormRef, CreationFormProps>(
 
     const nextStep = (steps = 1) => {
       setFormLevel((prev) => {
-        const newLvl = Math.min(prev + steps, allSlides.length);
+        const newLvl = Math.min(prev + steps, allSlides.length - 1);
         return newLvl;
       });
 

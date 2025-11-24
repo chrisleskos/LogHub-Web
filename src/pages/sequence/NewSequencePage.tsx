@@ -1,9 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import PageBase from "../../components/base/PageBase";
 import CreationForm, {
   type CreationFormRef,
 } from "../../components/creationForm/CreationForm";
-import styles from "./new-sequence.module.css";
 import Axios from "axios";
 import { useCookies } from "react-cookie";
 import type { SequenceRequest } from "../../interface/Sequence";

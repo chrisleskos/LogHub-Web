@@ -46,3 +46,35 @@
 .input-field-wrap textarea:focus {
   outline: none;
 }
+
+/* Input header */
+
+.input-header-wrap {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  max-width: 90vw;
+  margin: 0 auto;
+  font-size: 1.8rem;
+  border-bottom: var(--light-border);
+}
+
+.input-header-wrap > input {
+  border: none;
+  outline: none;
+  background-color: none;
+  font-weight: 600;
+  padding: 0.15rem 0 0.15rem 0.3rem;
+  width: 100%;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.4;
+}
+
+.icon > img {
+  width: 2rem;
+}
