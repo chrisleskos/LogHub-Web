@@ -19,7 +19,7 @@ function RoundSetUpSlide({
   nextStep = () => {},
   prevStep = () => {},
 }: NewSequenceSlideProps) {
-  const exerciseInstanceURL = "exercise-instance";
+  const exerciseInstanceURL = "exercise-instance/";
 
   const [cookies] = useCookies(["token"]);
 
@@ -38,30 +38,69 @@ function RoundSetUpSlide({
   const setRoundExercise = (id: number) => {
     operatingRound.exerciseInstanceIds.push(id);
     setRoundList((prev) => [
-      ...prev.filter((r) => r.name !== operatingRound.name),
-      {
-        exerciseInstanceIds: operatingRound.exerciseInstanceIds,
-        name: operatingRound.name,
-      },
+      ...prev.map((round) =>
+        round.name === operatingRound.name
+          ? {
+              exerciseInstanceIds: operatingRound.exerciseInstanceIds,
+              name: operatingRound.name,
+            }
+          : round
+      ),
     ]);
+
+    // if id doesn't exist in the list
+    if (
+      !exerciseInstanceList.some((e: ExerciseInstanceResponse) => e.id === id)
+    ) {
+      loadNewExerciseInstance(id);
+    }
   };
 
-  //   useEffect(() => {
-  //     Axios.get(baseUrl + exerciseInstanceURL, {
-  //       headers: {
-  //         Authorization: "Bearer " + cookies.token,
-  //       },
-  //     }).then((response) => {
-  //       setExerciseInstanceList(response.data);
-  //     });
-  //   }, []);
+  const loadNewExerciseInstance = (id: number) => {
+    Axios.get(baseUrl + exerciseInstanceURL + id, {
+      headers: {
+        Authorization: "Bearer " + cookies.token,
+      },
+    })
+      .then((response) => {
+        setExerciseInstanceList((prev) => [...prev, response.data]);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    setSequenceRequest((prev) => ({
+      ...prev,
+      rounds: roundList,
+    }));
+  }, [roundList]);
 
   const prepareRoundsDOMElements = useMemo(() => {
-    console.log(roundList);
+    console.log(sequenceRequest);
     return roundList.map((r: RoundRequest, i: number) => (
       <div key={r.name + i}>
         <input defaultValue={r.name} />
-        <div>{r.exerciseInstanceIds.map((id) => id)}</div>
+        <div>
+          {exerciseInstanceList
+            .filter((exInst: ExerciseInstanceResponse) =>
+              r.exerciseInstanceIds.some((id) => id === exInst.id)
+            )
+            .map((existingExInst: ExerciseInstanceResponse) => (
+              <ListElementCard
+                extraClasses={cardStyles.small}
+                listElementData={{
+                  id: existingExInst.id,
+                  name: existingExInst.exercise.name + " Instance",
+                  creator: existingExInst.creator,
+                  favorite: false,
+                  imageSrc: "/exercise/exercise_instance-icon.png",
+                }}
+                key={existingExInst.id}
+              />
+            ))}
+        </div>
         <ListElementCard
           listElementData={{ title: "Add exercise", imageSrc: "/add.png" }}
           extraClasses={cardStyles.small}
@@ -72,7 +111,7 @@ function RoundSetUpSlide({
         />
       </div>
     ));
-  }, [roundList]);
+  }, [roundList, exerciseInstanceList]);
   return (
     <div className={creationFormStyles["form-slide"]} id="slide3">
       <AlertMessage>
