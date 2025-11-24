@@ -90,6 +90,8 @@ function RoundSetUpSlide({
   };
 
   useEffect(() => {
+    console.log("Round updated: " + roundList);
+    console.log(roundList);
     setSequenceRequest((prev) => ({
       ...prev,
       rounds: roundList,
@@ -109,7 +111,7 @@ function RoundSetUpSlide({
           id={"round-header" + i}
           name={"round-header" + i}
           placeHolder={"Round " + (i + 1) + " name"}
-          defaultValue={r.name.trim() !== "" ? r.name : "Round " + (i + 1)}
+          defaultValue={r.name}
           handleOnKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) =>
             handleOnKeyUp(e, i)
           }
@@ -124,7 +126,7 @@ function RoundSetUpSlide({
                 extraClasses={cardStyles.small}
                 listElementData={{
                   id: existingExInst.id,
-                  name: existingExInst.exercise.name + " Instance",
+                  name: existingExInst.name,
                   creator: existingExInst.creator,
                   favorite: false,
                   imageSrc: "/exercise/exercise_instance-icon.png",
@@ -166,7 +168,7 @@ function RoundSetUpSlide({
             onClickHandler={() => {
               setRoundList((prev) => [
                 ...prev,
-                { exerciseInstanceIds: [], name: "Round " + (prev.length + 1) },
+                { exerciseInstanceIds: [], name: "" },
               ]);
             }}
           />

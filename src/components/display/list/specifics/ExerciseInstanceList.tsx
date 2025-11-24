@@ -46,7 +46,7 @@ function ExerciseInstanceList({
       .filter(
         (exerciseInstance: ExerciseInstanceResponse) =>
           searchValue === "" ||
-          exerciseInstance.exercise.name
+          exerciseInstance.name
             .toLowerCase()
             .includes(searchValue.toLowerCase()) ||
           exerciseInstance.comment
@@ -57,7 +57,7 @@ function ExerciseInstanceList({
         <ListElementCard
           listElementData={{
             id: exerciseInstance.id,
-            name: exerciseInstance.exercise.name + " Instance",
+            name: exerciseInstance.name,
             creator: exerciseInstance.creator,
             // description: exerciseInstance.description,
             favorite: false,

@@ -68,6 +68,7 @@ function NewExerciseInstancePage({ baseUrl }: NewExerciseInstanceProps) {
       const exerciseResponse = response.data;
       setSelectedExercise(exerciseResponse);
       if (exerciseInstanceRequest.name === "") {
+        console.log("MUHAHA, I CHANGED IT AGAIN!");
         setExerciseInstanceRequest((prev) => ({
           ...prev,
           name: exerciseResponse.name + " implementation",
