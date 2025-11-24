@@ -61,7 +61,6 @@ function MuscleTargetSelectionSlide({
           (t: MuscleTarget) => t.group === muscle && !secondarySet.has(t.name)
         )
         .map((t: MuscleTarget) => t.name);
-      console.log(groupTargets);
       return {
         ...prev,
         mainMuscleTarget: Array.from(
@@ -77,7 +76,6 @@ function MuscleTargetSelectionSlide({
       const groupTargets = muscleTargetsList
         .filter((t: MuscleTarget) => t.group === muscle && !mainSet.has(t.name))
         .map((t: MuscleTarget) => t.name);
-      console.log(groupTargets);
 
       return {
         ...prev,
@@ -310,7 +308,6 @@ function MuscleTargetSelectionSlide({
       },
     })
       .then((response) => {
-        console.log(response);
         setMuscleTargetsList(response.data);
       })
       .catch((error) => {
@@ -331,7 +328,6 @@ function MuscleTargetSelectionSlide({
             listElementData={{ title: "Add", imageSrc: "/add.png" }}
             extraClasses={cardStyles.small}
             onClickHandler={() => {
-              console.log(exerciseRequest);
               setShowMainMuscleSelector(true);
             }}
           />
