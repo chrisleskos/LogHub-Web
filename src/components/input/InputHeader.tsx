@@ -1,3 +1,4 @@
+import type { ChangeEvent } from "react";
 import styles from "./input-field.module.css";
 
 interface InputHeaderProps {
@@ -6,7 +7,8 @@ interface InputHeaderProps {
   id: string;
   inputRef?: React.RefObject<HTMLInputElement | null>;
   defaultValue?: string;
-  handleOnKeyUp?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  value?: string;
+  handleOnKeyUp?: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 function InputHeader({
@@ -14,7 +16,7 @@ function InputHeader({
   name,
   id,
   inputRef,
-  defaultValue,
+  value,
   handleOnKeyUp,
 }: InputHeaderProps) {
   return (
@@ -27,8 +29,8 @@ function InputHeader({
           ref={inputRef}
           name={name}
           id={id}
-          onKeyUp={handleOnKeyUp}
-          defaultValue={defaultValue}
+          onChange={handleOnKeyUp}
+          value={value}
           placeholder={placeHolder}
         />
       </div>

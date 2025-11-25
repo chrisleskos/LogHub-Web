@@ -4,11 +4,11 @@ import cardStyles from "../../components/display/list/list-display.module.css";
 import styles from "./new-sequence.module.css";
 import AlertMessage from "../../components/alert/AlertMessage";
 import ListElementCard from "../../components/display/list/ListElementCard";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type ChangeEvent } from "react";
 import Axios from "axios";
 import { useCookies } from "react-cookie";
 import type { ExerciseInstanceResponse } from "../../interface/ExerciseInstance";
-import type { RoundRequest } from "../../interface/Round";
+import type { RoundRequest, RoundUI } from "../../interface/Round";
 import Window from "../../components/window/Window";
 import ExerciseInstanceList from "../../components/display/list/specifics/ExerciseInstanceList";
 import InputHeader from "../../components/input/InputHeader";
@@ -18,50 +18,46 @@ function RoundSetUpSlide({
   baseUrl = "",
   sequenceRequest,
   setSequenceRequest,
-  nextStep = () => {},
   prevStep = () => {},
 }: NewSequenceSlideProps) {
   const exerciseInstanceURL = "exercise-instance/";
 
   const [cookies] = useCookies(["token"]);
 
-  const [roundList, setRoundList] = useState<RoundRequest[]>([]);
+  const [roundList, setRoundList] = useState<RoundUI[]>([]);
   // Round that is currently being set-up via modal window
-  const [operatingRound, setOperatingRound] = useState<RoundRequest>({
-    exerciseInstanceIds: [],
-    name: "",
-  });
+  const [operatingRoundIndex, setOperatingRoundIndex] = useState<number>(-1);
   const [exerciseInstanceList, setExerciseInstanceList] = useState<
     ExerciseInstanceResponse[]
   >([]);
 
   const [showWindowModal, setShowWindowModal] = useState<boolean>(false);
 
-  const handleOnKeyUp = (
-    e: React.KeyboardEvent<HTMLInputElement>,
-    index: number
-  ) => {
-    setRoundList((prev) => {
-      prev[index] = { ...prev[index], name: e.currentTarget?.value };
-      return prev;
-    });
+  const handleOnKeyUp = (e: ChangeEvent<HTMLInputElement>, index: number) => {
+    const newName = e.currentTarget.value;
+    setRoundList((prev) =>
+      prev.map((r, i) => (i === index ? { ...r, name: newName } : r))
+    );
   };
 
-  const removeRound = (round: RoundRequest) => {
-    setRoundList((prev) => prev.filter((r) => r.name !== round.name));
+  const removeRound = (index: number) => {
+    setRoundList((prev) => prev.filter((_r, i) => i !== index));
   };
 
   const setRoundExercise = (id: number) => {
-    operatingRound.exerciseInstanceIds =
-      operatingRound.exerciseInstanceIds.includes(id)
-        ? operatingRound.exerciseInstanceIds.filter((exid) => exid !== id)
-        : [...operatingRound.exerciseInstanceIds, id];
+    const newRoundExerciseInstanceList = roundList[
+      operatingRoundIndex
+    ].exerciseInstanceIds.includes(id)
+      ? roundList[operatingRoundIndex].exerciseInstanceIds.filter(
+          (exInst) => exInst !== id
+        )
+      : [...roundList[operatingRoundIndex].exerciseInstanceIds, id];
     setRoundList((prev) => [
-      ...prev.map((round) =>
-        round.name === operatingRound.name
+      ...prev.map((round, i) =>
+        i === operatingRoundIndex
           ? {
-              exerciseInstanceIds: operatingRound.exerciseInstanceIds,
-              name: operatingRound.name,
+              ...round,
+              exerciseInstanceIds: newRoundExerciseInstanceList,
             }
           : round
       ),
@@ -90,21 +86,23 @@ function RoundSetUpSlide({
   };
 
   useEffect(() => {
-    console.log("Round updated: " + roundList);
+    console.log("!Round updated in use effect: ");
     console.log(roundList);
     setSequenceRequest((prev) => ({
       ...prev,
-      rounds: roundList,
+      rounds: roundList.map(({ key, ...realRound }) => realRound), //strip key off of RoundUI
     }));
+
+    console.log("!Sequence Request is: ");
+    console.log(sequenceRequest);
   }, [roundList]);
 
   const prepareRoundsDOMElements = useMemo(() => {
-    console.log(sequenceRequest);
-    return roundList.map((r: RoundRequest, i: number) => (
-      <div key={r.name + i} className={styles["round-wrapper"]}>
+    return roundList.map((r: RoundUI, i: number) => (
+      <div key={r.key} className={styles["round-wrapper"]}>
         <CloseButton
           onClickHandler={() => {
-            removeRound(r);
+            removeRound(i);
           }}
         />
         <InputHeader
@@ -112,7 +110,7 @@ function RoundSetUpSlide({
           name={"round-header" + i}
           placeHolder={"Round " + (i + 1) + " name"}
           defaultValue={r.name}
-          handleOnKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) =>
+          handleOnKeyUp={(e: ChangeEvent<HTMLInputElement>) =>
             handleOnKeyUp(e, i)
           }
         />
@@ -131,14 +129,14 @@ function RoundSetUpSlide({
                   favorite: false,
                   imageSrc: "/exercise/exercise_instance-icon.png",
                 }}
-                key={existingExInst.id}
+                key={"round" + i + "-exInst" + existingExInst.id}
               />
             ))}
           <ListElementCard
             listElementData={{ title: "Add exercise", imageSrc: "/add.png" }}
             extraClasses={cardStyles.small}
             onClickHandler={() => {
-              setOperatingRound(r);
+              setOperatingRoundIndex(i);
               setShowWindowModal(true);
             }}
           />
@@ -156,7 +154,7 @@ function RoundSetUpSlide({
           baseUrl={baseUrl}
           handleOnElementClick={setRoundExercise}
           haveAddBtn={false}
-          idList={operatingRound.exerciseInstanceIds}
+          idList={roundList[operatingRoundIndex]?.exerciseInstanceIds}
         />
       </Window>
       <div>
@@ -168,7 +166,7 @@ function RoundSetUpSlide({
             onClickHandler={() => {
               setRoundList((prev) => [
                 ...prev,
-                { exerciseInstanceIds: [], name: "" },
+                { key: crypto.randomUUID(), exerciseInstanceIds: [], name: "" },
               ]);
             }}
           />
@@ -183,16 +181,11 @@ function RoundSetUpSlide({
         >
           &#60; Back
         </div>
-        {sequenceRequest.name.trim().length > 0 && (
-          <div
-            className={creationFormStyles["next-btn"]}
-            onClick={() => {
-              nextStep();
-            }}
-          >
-            Next
-          </div>
-        )}
+        {sequenceRequest.rounds.length > 0 &&
+          !sequenceRequest.rounds.some((r) => r.name === "") &&
+          !sequenceRequest.rounds.some(
+            (r) => r.exerciseInstanceIds.length === 0
+          ) && <button>Submit</button>}
       </div>
     </div>
   );

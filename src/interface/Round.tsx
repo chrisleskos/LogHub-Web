@@ -10,3 +10,7 @@ export type RoundResponse = {
   name: string;
   exerciseInstanceResponses: ExerciseInstanceResponse[];
 };
+
+export type RoundUI = RoundRequest & {
+  key: string;
+};
