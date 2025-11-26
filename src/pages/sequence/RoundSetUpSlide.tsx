@@ -8,7 +8,7 @@ import { useEffect, useMemo, useState, type ChangeEvent } from "react";
 import Axios from "axios";
 import { useCookies } from "react-cookie";
 import type { ExerciseInstanceResponse } from "../../interface/ExerciseInstance";
-import type { RoundRequest, RoundUI } from "../../interface/Round";
+import type { RoundUI } from "../../interface/Round";
 import Window from "../../components/window/Window";
 import ExerciseInstanceList from "../../components/display/list/specifics/ExerciseInstanceList";
 import InputHeader from "../../components/input/InputHeader";
@@ -86,15 +86,10 @@ function RoundSetUpSlide({
   };
 
   useEffect(() => {
-    console.log("!Round updated in use effect: ");
-    console.log(roundList);
     setSequenceRequest((prev) => ({
       ...prev,
       rounds: roundList.map(({ key, ...realRound }) => realRound), //strip key off of RoundUI
     }));
-
-    console.log("!Sequence Request is: ");
-    console.log(sequenceRequest);
   }, [roundList]);
 
   const prepareRoundsDOMElements = useMemo(() => {
@@ -108,7 +103,7 @@ function RoundSetUpSlide({
         <InputHeader
           id={"round-header" + i}
           name={"round-header" + i}
-          placeHolder={"Round " + (i + 1) + " name"}
+          placeHolder={"Round " + (i + 1)}
           defaultValue={r.name}
           handleOnKeyUp={(e: ChangeEvent<HTMLInputElement>) =>
             handleOnKeyUp(e, i)

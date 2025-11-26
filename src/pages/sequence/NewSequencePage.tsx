@@ -7,6 +7,7 @@ import Axios from "axios";
 import { useCookies } from "react-cookie";
 import type { SequenceRequest } from "../../interface/Sequence";
 import RoundSetUpSlide from "./RoundSetUpSlide";
+import NameCommentSlide from "./NameCommentSlide";
 
 interface NewSequencePageProps {
   baseUrl: string;
@@ -23,6 +24,7 @@ function NewSequencePage({ baseUrl }: NewSequencePageProps) {
 
   const [sequenceRequest, setSequenceRequest] = useState<SequenceRequest>({
     name: "",
+    description: "",
     rounds: [],
   });
 
@@ -48,11 +50,17 @@ function NewSequencePage({ baseUrl }: NewSequencePageProps) {
     <>
       <PageBase header="New Sequence" />
       <CreationForm ref={creationFormRef} onSubmitHandler={handleFormSubmit}>
-        <RoundSetUpSlide
+        <NameCommentSlide
           baseUrl={baseUrl}
           sequenceRequest={sequenceRequest}
           setSequenceRequest={setSequenceRequest}
           nextStep={nextStep}
+        />
+
+        <RoundSetUpSlide
+          baseUrl={baseUrl}
+          sequenceRequest={sequenceRequest}
+          setSequenceRequest={setSequenceRequest}
           prevStep={prevStep}
         />
       </CreationForm>

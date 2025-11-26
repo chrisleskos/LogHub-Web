@@ -54,7 +54,7 @@ function SequenceList({
             id: sequence.id,
             name: sequence.name,
             creator: sequence.creator,
-            // description: sequence.description,
+            description: sequence.description,
             favorite: false,
             // hashtag: sequence.sequenceType,
             imageSrc: "/sequence/sequence-icon.png",
