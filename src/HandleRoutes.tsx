@@ -10,6 +10,8 @@ import NewExercisePage from "./pages/exercise/NewExercisePage";
 import ExerciseInstancesPage from "./pages/exerciseInstance/ExerciseInstancesPage";
 import SequencesPage from "./pages/sequence/SequencePage";
 import NewSequencePage from "./pages/sequence/NewSequencePage";
+import TrainingPage from "./pages/training/TrainingPage";
+import NewTrainingPage from "./pages/training/NewTrainingPage";
 
 interface HandleRoutesProps {
   baseUrl: string;
@@ -40,6 +42,10 @@ function HandleRoutes({ baseUrl }: HandleRoutesProps) {
       <Route path="/sequence">
         <Route index element={<SequencesPage baseUrl={baseUrl} />} />
         <Route path="new" element={<NewSequencePage baseUrl={baseUrl} />} />
+      </Route>
+      <Route path="/training">
+        <Route index element={<TrainingPage /*baseUrl={baseUrl}*/ />} />
+        <Route path="new" element={<NewTrainingPage /*baseUrl={baseUrl}*/ />} />
       </Route>
       <Route path="*" element={<PageNotFound baseUrl={baseUrl} />} />
     </Routes>
