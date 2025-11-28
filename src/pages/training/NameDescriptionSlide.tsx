@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import AlertMessage from "../../components/alert/AlertMessage";
 import creationFormStyles from "../../components/creationForm/creation-form.module.css";
-import styles from "./new-sequence.module.css";
+import styles from "./new-training.module.css";
 import InputField from "../../components/input/InputField";
 import TextAreaField from "../../components/input/TextAreaField";
 import type { NewTrainingSlideProps } from "./NewTrainingSlideProps";
@@ -40,7 +40,7 @@ function NameCommentSlide({
   return (
     <div className={creationFormStyles["form-slide"]} id="slide3">
       <AlertMessage>
-        Exercise Instance's <strong>Name</strong> & <strong>Description</strong>
+        Training's <strong>Name</strong> & <strong>Description</strong>
       </AlertMessage>
       <div className={styles["input-fields"]}>
         <InputField

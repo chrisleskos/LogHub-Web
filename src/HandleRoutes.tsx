@@ -44,7 +44,7 @@ function HandleRoutes({ baseUrl }: HandleRoutesProps) {
         <Route path="new" element={<NewSequencePage baseUrl={baseUrl} />} />
       </Route>
       <Route path="/training">
-        <Route index element={<TrainingPage /*baseUrl={baseUrl}*/ />} />
+        <Route index element={<TrainingPage baseUrl={baseUrl} />} />
         <Route path="new" element={<NewTrainingPage /*baseUrl={baseUrl}*/ />} />
       </Route>
       <Route path="*" element={<PageNotFound baseUrl={baseUrl} />} />

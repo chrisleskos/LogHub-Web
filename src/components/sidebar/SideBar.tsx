@@ -101,7 +101,13 @@ function SideBar({
               Exercise Instance
             </a>
             <a className={"" + styles["nav-button"]} href="/sequence">
-              Sequences
+              Sequence
+            </a>
+            <a className={"" + styles["nav-button"]} href="/training">
+              Training
+            </a>
+            <a className={"" + styles["nav-button"]} href="/program">
+              Program
             </a>
             <a className={"" + styles["nav-button"]} href="/about">
               About

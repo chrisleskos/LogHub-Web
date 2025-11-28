@@ -40,7 +40,7 @@ function NameCommentSlide({
   return (
     <div className={creationFormStyles["form-slide"]} id="slide3">
       <AlertMessage>
-        Exercise Instance's <strong>Name</strong> & <strong>Description</strong>
+        Sequence's <strong>Name</strong> & <strong>Description</strong>
       </AlertMessage>
       <div className={styles["input-fields"]}>
         <InputField
